@@ -61,7 +61,7 @@ getCenters x y = take x y
 --           kthPoints = pointsForCenters it 0 indexes x
 
 kmeans :: Int -> Int -> [[Double]] -> [[Double]] -> [[Double]]
-kmeans k it x y | it < k = (vectorMean kthPoints):kmeans k (it+1) x y
+kmeans k it x y | it < k = (vectorMean kthPoints):(kmeans k (it+1) x y) `using` parList rdeepseq
                 | otherwise = []
     where indexes = belongsTo x y
           kthPoints = pointsForCenters it 0 indexes x

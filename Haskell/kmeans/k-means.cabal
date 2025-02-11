@@ -52,7 +52,7 @@ extra-doc-files:    CHANGELOG.md
 -- extra-source-files:
 
 common warnings
-    ghc-options: -Wall -O2 -threaded
+    ghc-options: -Wall -O2 -threaded -rtsopts -eventlog
 
 executable k-means
     -- Import common warning flags.
@@ -68,7 +68,7 @@ executable k-means
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.1, deepseq ^>=1.4.0.0, parallel ^>=3.2.0.0, criterion-measurement ^>=0.2.0.0
+    build-depends:    base ^>=4.19.0.0, deepseq >=1.4.0.0, parallel >=3.2.0.0, criterion-measurement >=0.2.0.0
 
     -- Directories containing source files.
     hs-source-dirs:   app, src
