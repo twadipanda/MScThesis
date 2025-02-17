@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
+#include <vector>
 
-class Reader {
-    private:
-        std::string fileName{};
-    public:
-        Reader(std::string fileName);
-        
-        void read();
-};
+namespace KmeansParser {
+    class Reader {
+        private:
+            std::string fileName{};
+            std::vector<std::vector<double>> all_points{};
+        public:
+            Reader(std::string fileName);
+            std::vector<std::vector<double>> readAndParse();
+    };
+}
