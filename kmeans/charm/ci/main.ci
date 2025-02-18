@@ -1,0 +1,13 @@
+mainmodule main {
+
+  readonly CProxy_Main mainProxy;
+
+  extern module distanceMetrics;
+
+  mainchare Main {
+    entry Main(CkArgMsg* msg);
+    entry void done();
+    entry void finished(double, int);
+  };
+
+};
