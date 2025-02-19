@@ -11,6 +11,6 @@ class Main : public CBase_Main {
 
   /// Entry Methods ///
   void done();
-  void finished(double value, int index);
+  void finished(std::vector<double>&, int index, int);
 
 };

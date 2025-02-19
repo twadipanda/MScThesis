@@ -2,7 +2,6 @@ module distanceMetrics {
 
   array [1D] DistanceMetrics {
     entry DistanceMetrics();
-    entry void euclideanDistance(const std::vector<double>&, const std::vector<double>&);
   };
 
 };
