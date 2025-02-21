@@ -1,3 +1,4 @@
 build/
 **/build/
 **/charm-v7.0.0
+**/**/charm-v7.0.0
