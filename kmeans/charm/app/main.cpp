@@ -1,8 +1,9 @@
 #include "main.decl.h"
 
 #include "main.h"
-#include "distanceMetrics.h"
+// #include "distanceMetrics.h"
 #include "kmeans.decl.h"
+#include "kmeans.h"
 
 #include<vector>
 #include<iostream>
@@ -10,13 +11,14 @@
 #include "read.h"
 
 /* readonly */ CProxy_Main mainProxy;
-int numElements;
+int numElements = 1000;
 std::chrono::_V2::system_clock::time_point start;
 int counter = 0;
 int maxCompute;
 std::vector<std::vector<double>> distances;
 std::vector<std::vector<double>> points;
 std::vector<std::vector<double>> centers;
+CProxy_Kmeans kmeansArray = CProxy_Kmeans::ckNew(numElements);
 
 
 // Entry point of Charm++ application
@@ -26,15 +28,16 @@ Main::Main(CkArgMsg* msg) {
     int iterations = 0;
     int proxies = 0;
     numElements = 1000;
-    EuclideanDistance distance_metrics;
+    // EuclideanDistance distance_metrics;
     KmeansParser::Reader reader("letter.txt");
+    Kmeans kmeans;
     points = reader.readAndParse();
     centers = kmeans.getInitialCenters(points, k);
     maxCompute = points.size() * centers.size();
     distances.resize(points.size());
-    CProxy_Kmeans kmeansArray = CProxy_Kmeans::ckNew(numElements);
+    // CProxy_Kmeans kmeansArray = CProxy_Kmeans::ckNew(numElements);
     start = std::chrono::high_resolution_clock::now();
-    kmeansArray[proxies].computeDistance(points, centers, distance_metrics);
+    kmeansArray[proxies].computeDistance(points, centers);
     // std::vector<std::vector<double>> distances = kmeans.computeDistance(points, centers, &DistanceMetrics::euclideanDistance, distance_metrics);
     // std::vector<std::vector<double>> new_centers = kmeans.computeNewCenters(points, distances, k);
     // while (centers != new_centers) {
@@ -63,13 +66,14 @@ Main::Main(CkArgMsg* msg) {
 Main::Main(CkMigrateMessage* msg) { }
 
 void Main::finished(std::vector<double>& distance, int index, int isFinal) {
-    CkPrintf("Finished called %d by index %d\n", CkMyPe(), thisIndex);
+    CkPrintf("Finished called %d by index %d\n", CkMyPe(), index);
     distances[index] = distance;
     if (isFinal) {
         std::cout << "Another Iteration!\n";
+        Kmeans kmeans;
         std::vector<std::vector<double>> new_centers = kmeans.computeNewCenters(points, distances, 26);
         if (centers != new_centers) {
-            kmeansArray[proxies].computeDistance(points, new_centers, distance_metrics);
+            kmeansArray[0].computeDistance(points, new_centers);
             centers = new_centers;
         }
         else {

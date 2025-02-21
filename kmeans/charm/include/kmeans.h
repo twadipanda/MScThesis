@@ -9,9 +9,10 @@ class Kmeans : public CBase_Kmeans {
   Kmeans();
   Kmeans(CkMigrateMessage *msg);
 
-  void Kmeans::computeDistance(const std::vector<std::vector<double>>&,
+  std::vector<std::vector<double>> getInitialCenters(const std::vector<std::vector<double>>&, const int&);
+  void computeDistance(const std::vector<std::vector<double>>&,
     const std::vector<std::vector<double>>&);
-  void Kmeans::computeDistancePar(const std::vector<std::vector<double>>&,
+  void computeDistancePar(const std::vector<std::vector<double>>&,
     const std::vector<double>&, int, int);
   int minIndex(const std::vector<double>&);
   std::vector<std::vector<double>> computeNewCenters(const std::vector<std::vector<double>>&, const std::vector<std::vector<double>>&, int);

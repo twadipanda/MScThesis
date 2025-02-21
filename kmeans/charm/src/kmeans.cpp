@@ -27,20 +27,24 @@ void Kmeans::computeDistance(const std::vector<std::vector<double>>& points,
         int pointIndex = 0;
         int pointslength =  points.size()
         int isFinal = 0;
+        int chareIndex = 1;
         for (std::vector<double> point : points) {
             if (pointIndex + 1 == pointslength) {
                 isFinal = 1;
             }
-            if (thisIndex < (numElements - 1)) {
-                thisProxy[thisIndex + 1].computeDistancePar(centers, point, obj, pointIndex, isFinal);
-                pointIndex++;
+            if (chareIndex == (numElements - 1)) {
+                chareIndex = 1;
             }
-            else {
-                thisProxy[thisIndex].computeDistancePar(centers, point, obj, pointIndex, isFinal);
-                pointIndex++;
-                // distances.push_back(distance);
-                // distance.clear();
-            }
+            thisProxy[chareIndex].computeDistancePar(centers, point, obj, pointIndex, isFinal);
+            pointIndex++;
+            chareIndex++;
+            // else {
+            //     thisProxy[chareIndex].computeDistancePar(centers, point, obj, pointIndex, isFinal);
+            //     pointIndex++;
+            //     chareIndex++;
+            //     // distances.push_back(distance);
+            //     // distance.clear();
+            // }
         }
         // return std::move(distances);
 }
