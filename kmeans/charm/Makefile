@@ -7,7 +7,7 @@ all: distanceMetrics
 
 
 distanceMetrics : main.o distanceMetrics.o read.o kmeans.o
-	$(CHARMC) -language charm++ -o hello main.o distanceMetrics.o read.o kmeans.o
+	$(CHARMC) -language charm++ -o kmeans main.o distanceMetrics.o read.o kmeans.o
 
 main.o : app/main.cpp include/main.h main.decl.h main.def.h kmeans.decl.h
 	$(CHARMC) -I./include -I. -o main.o app/main.cpp
@@ -33,8 +33,12 @@ main.decl.h main.def.h : ci/main.ci
 clean:
 	rm -f main.decl.h main.def.h main.o
 	rm -f kmeans.decl.h kmeans.def.h kmeans.o
+	rm -f distanceMetrics.o
 	rm -f read.o
-	rm -f hello charmrun
+	rm -f kmeans charmrun
+
+run-quiet:
+	$(CHARMDIR)/bin/charmrun +p7 ./kmeans ++quiet
 
 run:
-	$(CHARMDIR)/bin/charmrun +p10 ./hello
+	$(CHARMDIR)/bin/charmrun +p7 ./kmeans

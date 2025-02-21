@@ -1,11 +1,11 @@
+#include <iostream>
 #include <vector>
 #include <limits.h>
-#include "kmeans.h"
 #include "kmeans.decl.h"
+#include "kmeans.h"
 
 #include "distanceMetrics.h"
 #include "main.decl.h"
-// #include "distanceMetrics.decl.h"
 
 extern CProxy_Main mainProxy;
 extern /* readonly */ int numElements;
@@ -14,6 +14,10 @@ Kmeans::Kmeans() {};
 Kmeans::Kmeans(CkMigrateMessage *msg) {};
 
 std::vector<std::vector<double>> Kmeans::getInitialCenters(const std::vector<std::vector<double>>& points, const int& k) {
+    if (k > points.size()) {
+        CkPrintf("Error: k (%d) exceeds number of points (%lu)\n", k, points.size());
+        CkExit();
+    }
     std::vector<std::vector<double>> centers;
     for (int i = 0; i < k; i++) {
         centers.push_back(points[i]);
@@ -25,37 +29,26 @@ void Kmeans::computeDistance(const std::vector<std::vector<double>>& points,
     const std::vector<std::vector<double>>& centers) {
         std::vector<std::vector<double>> distances;
         int pointIndex = 0;
-        int pointslength =  points.size()
+        int pointslength =  points.size();
         int isFinal = 0;
         int chareIndex = 1;
         for (std::vector<double> point : points) {
-            if (pointIndex + 1 == pointslength) {
-                isFinal = 1;
-            }
             if (chareIndex == (numElements - 1)) {
                 chareIndex = 1;
             }
-            thisProxy[chareIndex].computeDistancePar(centers, point, obj, pointIndex, isFinal);
+            thisProxy[chareIndex].computeDistancePar(centers, point, pointIndex);
             pointIndex++;
             chareIndex++;
-            // else {
-            //     thisProxy[chareIndex].computeDistancePar(centers, point, obj, pointIndex, isFinal);
-            //     pointIndex++;
-            //     chareIndex++;
-            //     // distances.push_back(distance);
-            //     // distance.clear();
-            // }
         }
-        // return std::move(distances);
 }
 
-void Kmeans::computeDistancePar(const std::vector<std::vector<double>>& centers, const std::vector<double>& point, int pointIndex, int isFinal) {
+void Kmeans::computeDistancePar(const std::vector<std::vector<double>>& centers, const std::vector<double>& point, int pointIndex) {
     std::vector<double> distance;
-    CkPrintf("Computing distance on processor %d by index %d\n", CkMyPe(), thisIndex);
+    EuclideanDistance distance_metrics;
     for (std::vector<double> center: centers) {
-        distance.push_back(EuclideanDistance().computeDistance(center, point));
+        distance.push_back(distance_metrics.computeDistance(center, point));
     }
-    mainProxy.finished(distance, pointIndex, isFinal);
+    mainProxy.finished(distance, pointIndex);
 }
 
 int Kmeans::minIndex(const std::vector<double>& distances) {

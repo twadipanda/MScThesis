@@ -1,7 +1,6 @@
 #include "main.decl.h"
 
 #include "main.h"
-// #include "distanceMetrics.h"
 #include "kmeans.decl.h"
 #include "kmeans.h"
 
@@ -11,53 +10,35 @@
 #include "read.h"
 
 /* readonly */ CProxy_Main mainProxy;
-int numElements = 1000;
+int numElements;
 std::chrono::_V2::system_clock::time_point start;
-int counter = 0;
+int counter;
 int maxCompute;
 std::vector<std::vector<double>> distances;
 std::vector<std::vector<double>> points;
 std::vector<std::vector<double>> centers;
-CProxy_Kmeans kmeansArray = CProxy_Kmeans::ckNew(numElements);
+CProxy_Kmeans kmeansArray;
+int k;
+int iterations;
+int timesCalled;
 
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
+    numElements = 5000;
+    kmeansArray = CProxy_Kmeans::ckNew(numElements);
+    counter = 0;
     mainProxy = thisProxy;
-    int k = 26;
-    int iterations = 0;
-    int proxies = 0;
-    numElements = 1000;
-    // EuclideanDistance distance_metrics;
+    k = 16;
+    timesCalled = 0;
+    iterations = 1;
     KmeansParser::Reader reader("letter.txt");
-    Kmeans kmeans;
     points = reader.readAndParse();
-    centers = kmeans.getInitialCenters(points, k);
+    centers = Kmeans::getInitialCenters(points, k);
     maxCompute = points.size() * centers.size();
     distances.resize(points.size());
-    // CProxy_Kmeans kmeansArray = CProxy_Kmeans::ckNew(numElements);
     start = std::chrono::high_resolution_clock::now();
-    kmeansArray[proxies].computeDistance(points, centers);
-    // std::vector<std::vector<double>> distances = kmeans.computeDistance(points, centers, &DistanceMetrics::euclideanDistance, distance_metrics);
-    // std::vector<std::vector<double>> new_centers = kmeans.computeNewCenters(points, distances, k);
-    // while (centers != new_centers) {
-    //     iterations++;
-    //     distances = kmeans.computeDistance(points, new_centers, &DistanceMetrics::euclideanDistance, distance_metrics);
-    //     centers = new_centers;
-    //     new_centers = kmeans.computeNewCenters(points, distances, k);
-    // }
-    
-    
-    // int index = 0;
-    // for (std::vector<double> point : points) {
-    //     for (std::vector<double> center : centers) {
-    //         if (index == 999) {
-    //             index = 0;
-    //         }
-    //         distanceMetricsArray[index].euclideanDistance(point, center);
-    //         index++;
-    //     }
-    // }
+    kmeansArray[0].computeDistance(points, centers);
 }
 
 
@@ -65,26 +46,25 @@ Main::Main(CkArgMsg* msg) {
 // NOTE: This constructor does not need to appear in the ".ci" file
 Main::Main(CkMigrateMessage* msg) { }
 
-void Main::finished(std::vector<double>& distance, int index, int isFinal) {
-    CkPrintf("Finished called %d by index %d\n", CkMyPe(), index);
+void Main::finished(const std::vector<double>& distance, int index) {
     distances[index] = distance;
-    if (isFinal) {
-        std::cout << "Another Iteration!\n";
-        Kmeans kmeans;
-        std::vector<std::vector<double>> new_centers = kmeans.computeNewCenters(points, distances, 26);
+    timesCalled++;
+    if (timesCalled == points.size()) {
+        timesCalled = 0;
+        std::vector<std::vector<double>> new_centers = Kmeans::computeNewCenters(points, distances, k);
         if (centers != new_centers) {
-            kmeansArray[0].computeDistance(points, new_centers);
             centers = new_centers;
+            iterations++;
+            distances.clear();
+            distances.resize(points.size());
+            kmeansArray[0].computeDistance(points, new_centers);
         }
         else {
+            std::cout << centers[0][0] << "\n";
+            std::cout << new_centers[0][0] << "\n";
             done();
         }
     }
-    // CkPrintf("Got value %f from index %d on processor %d\n", value, index, CkMyPe());
-    // counter++;
-    // if (counter == maxCompute) {
-    //     done();
-    // }
 }
 
 
@@ -94,7 +74,7 @@ void Main::done() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     std::cout << "Finished!" << "\n";
-    // std::cout << "Took " << iterations << " iterations!\n";
+    std::cout << "Took " << iterations << " iterations!\n";
     std::cout << "Execution time: " << elapsed.count() << " seconds\n";
     CkExit();
 }

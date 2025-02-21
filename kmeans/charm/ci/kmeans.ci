@@ -3,7 +3,7 @@ module kmeans {
   array [1D] Kmeans {
     entry Kmeans();
     entry void computeDistance(const std::vector<std::vector<double>>&, const std::vector<std::vector<double>>&);
-    entry void computeDistancePar(const std::vector<std::vector<double>>&, const std::vector<double>&, int, int);
+    entry void computeDistancePar(const std::vector<std::vector<double>>&, const std::vector<double>&, int);
   };
 
 };

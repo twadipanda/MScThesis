@@ -8,7 +8,7 @@ mainmodule main {
   mainchare Main {
     entry Main(CkArgMsg* msg);
     entry void done();
-    entry void finished(std::vector<double>&, int, int);
+    entry void finished(const std::vector<double>&, int);
   };
 
 };
