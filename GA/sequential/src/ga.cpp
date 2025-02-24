@@ -1,5 +1,6 @@
 #include <vector>
 #include <random>
+#include <cmath>
 #include "ga.hpp"
 
 namespace EA {
@@ -21,14 +22,33 @@ namespace EA {
     return std::move(population);
   }
 
-  double evaluate(std::vector<double>& individual, BenchMark benchmark) {
-    return benchmark.fitness(individual);
+  std::vector<std::pair<int, double>> GA::evaluate(std::vector<std::vector<double>>& population, const Bench::BenchMark& benchmark) {
+    std::vector<std::pair<int, double>> fitness;
+    fitness.reserve(population.size());
+    for (int i = 0; i < population.size(); i++) {
+      fitness.push_back(std::make_pair(i, benchmark.fitness(population[i])));
+    }
+    return std::move(fitness);
   }
 
-  std::vector<std::vector<double>> selection(std::vector<std::vector<double>>&,
-  SelectionHeuristic, double retention, double elite) {
-    
+  // std::vector<std::vector<double>> selection(std::vector<std::vector<double>>&,
+  // SelectionHeuristic, double retention, double elite) {
+
+  // }
+  // std::vector<double> crossover(CrossoverHeuristic, std::vector<double>&, std::vector<double>&);
+  // std::vector<double> mutation(MutationHeuristic, std::vector<double>&, std::vector<double>&);
+  std::vector<std::vector<double>> GA::iterate(std::vector<std::vector<double>>& population, double retention, double elite,
+    const Heuristcs::SelectionHeuristic& selectionHeuristic, const Heuristcs::CrossoverHeuristic& crossoverHeuristic, const Heuristcs::MutationHeuristic& mutationHeuristic, const Bench::BenchMark& benchmark) {
+      std::vector<std::pair<int, double>> fitness = evaluate(population, benchmark);
+      std::vector<double> params = {elite, retention};
+      std::vector<double> distributionIndex = {5};
+      std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population, fitness, params);
+      std::vector<std::vector<double>> offsprings;
+      for (int i = std::floor(population.size()*elite); i < population.size(); i+=2) {
+        offsprings = crossoverHeuristic.crossover(selectedPopulation[i], selectedPopulation[i+1], distributionIndex);
+        selectedPopulation[i] = mutationHeuristic.mutate(offsprings[0]);
+        selectedPopulation[i+1] = mutationHeuristic.mutate(offsprings[1]);
+      }
+      return std::move(selectedPopulation);
   }
-  std::vector<double> crossover(CrossoverHeuristic, std::vector<double>&, std::vector<double>&);
-  std::vector<double> mutation(MutationHeuristic, std::vector<double>&, std::vector<double>&);
 }

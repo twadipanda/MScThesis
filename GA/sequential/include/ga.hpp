@@ -10,9 +10,10 @@ namespace EA {
  class GA {
   public:
     static std::vector<std::vector<double>> initialize(int populationSize, int individualSize);
-    static double evaluate(std::vector<double>&, BenchMark);
-    static std::vector<std::vector<double>> selection(std::vector<std::vector<double>>&, SelectionHeuristic, double retention, double elite);
-    static std::vector<double> crossover(CrossoverHeuristic, std::vector<double>&, std::vector<double>&);
-    static std::vector<double> mutation(MutationHeuristic, std::vector<double>&, std::vector<double>&);
-  }; 
+    static std::vector<std::pair<int, double>> evaluate(std::vector<std::vector<double>>&, const Bench::BenchMark&);
+    // static std::vector<std::vector<double>> selection(std::vector<std::vector<double>>&, Heuristcs::SelectionHeuristic, double retention, double elite);
+    // static std::vector<double> crossover(Heuristcs::CrossoverHeuristic, std::vector<double>&, std::vector<double>&);
+    // static std::vector<double> mutation(Heuristcs::MutationHeuristic, std::vector<double>&, std::vector<double>&);
+    static std::vector<std::vector<double>> iterate(std::vector<std::vector<double>>&, double retention, double elite, const Heuristcs::SelectionHeuristic&, const Heuristcs::CrossoverHeuristic&, const Heuristcs::MutationHeuristic&, const Bench::BenchMark&);
+  };
 }

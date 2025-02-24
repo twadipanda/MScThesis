@@ -3,10 +3,10 @@
 #include "benchmark.hpp"
 
 namespace Bench {
-  double Sphere::fitness(std::vector<double>& individual) {
+  double Sphere::fitness(std::vector<double>& individual) const {
     double result = 0;
-    for (double phenotype : individual) {
-      result += std::pow(individual, 2);
+    for (double gene : individual) {
+      result += std::pow(gene, 2);
     }
   }
 }
