@@ -8,5 +8,6 @@ namespace Bench {
     for (double gene : individual) {
       result += std::pow(gene, 2);
     }
+    return result;
   }
 }
