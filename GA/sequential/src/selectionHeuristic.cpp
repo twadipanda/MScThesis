@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
-#include <iostream>
 #include "selectionHeuristic.hpp"
 
 namespace Heuristcs {
@@ -21,11 +20,9 @@ namespace Heuristcs {
     int randomInt = size;
     int temp = 0;
     newPopulation.reserve(size);
-    // std::cout << "Top Fitness: " << fitness[0].second << " Top Index: " << fitness[0].first << "\n";
     std::sort(fitness.begin(), fitness.end(), [](const auto& a, const auto& b) {
       return a.second < b.second;
     });
-    // std::cout << "Top Fitness: " << fitness[0].second << " Top Index: " << fitness[0].first << "\n";
     for (int i = 0; i < elites; i++) {
       newPopulation.push_back(population[fitness[i].first]);
     }
@@ -39,7 +36,6 @@ namespace Heuristcs {
       }
       newPopulation.push_back(population[fitness[randomInt].first]);
     }
-    // std::cout << "Top Individual: " << population[0][0] << population[0][1] << population[0][2] << "\n";
     return std::move(newPopulation);
     // for (const auto& pair : fitness) {
     //   std::cout << pair.first << ": " << pair.second << "\n";
