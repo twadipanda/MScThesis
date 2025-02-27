@@ -1,6 +1,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <iostream>
 #include "ga.hpp"
 
 namespace EA {
@@ -11,7 +12,7 @@ namespace EA {
     individual.reserve(individualSize);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-1.0, 1.0);
+    std::uniform_real_distribution<> dis(-1, 1);
     for (int i = 0; i < populationSize; i++) {
       individual.clear();
       for (int j = 0; j < individualSize; j++) {
@@ -31,20 +32,14 @@ namespace EA {
     return std::move(fitness);
   }
 
-  // std::vector<std::vector<double>> selection(std::vector<std::vector<double>>&,
-  // SelectionHeuristic, double retention, double elite) {
-
-  // }
-  // std::vector<double> crossover(CrossoverHeuristic, std::vector<double>&, std::vector<double>&);
-  // std::vector<double> mutation(MutationHeuristic, std::vector<double>&, std::vector<double>&);
   std::vector<std::vector<double>> GA::iterate(std::vector<std::vector<double>>& population, double retention, double elite,
     const Heuristcs::SelectionHeuristic& selectionHeuristic, const Heuristcs::CrossoverHeuristic& crossoverHeuristic, const Heuristcs::MutationHeuristic& mutationHeuristic, const Bench::BenchMark& benchmark) {
       std::vector<std::pair<int, double>> fitness = evaluate(population, benchmark);
       std::vector<double> params = {elite, retention};
-      std::vector<double> distributionIndex = {5};
+      std::vector<double> distributionIndex = {2};
       std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population, fitness, params);
       std::vector<std::vector<double>> offsprings;
-      for (int i = std::floor(population.size()*elite); i < population.size(); i+=2) {
+      for (int i = std::floor(population.size()*elite); i < population.size() - 1; i+=2) {
         offsprings = crossoverHeuristic.crossover(selectedPopulation[i], selectedPopulation[i+1], distributionIndex);
         selectedPopulation[i] = mutationHeuristic.mutate(offsprings[0]);
         selectedPopulation[i+1] = mutationHeuristic.mutate(offsprings[1]);

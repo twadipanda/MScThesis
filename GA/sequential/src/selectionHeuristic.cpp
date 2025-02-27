@@ -14,7 +14,7 @@ namespace Heuristcs {
     std::mt19937 gen(rd());
     std::vector<std::vector<double>> newPopulation;
     int size = population.size();
-    std::uniform_int_distribution<> dis(0, size);
+    std::uniform_int_distribution<> dis(0, size - 1);
     int elites = std::floor(size*params[0]);
     int selectionCriteria = params[1];
     int randomInt = size;
@@ -27,7 +27,7 @@ namespace Heuristcs {
       newPopulation.push_back(population[fitness[i].first]);
     }
     for (int i = 0; i < size - elites; i++) {
-      randomInt = size;
+      randomInt = dis(gen);
       for (int j = 0; j < selectionCriteria; j++) {
         temp = dis(gen);
         if (randomInt > temp) {
@@ -37,8 +37,5 @@ namespace Heuristcs {
       newPopulation.push_back(population[fitness[randomInt].first]);
     }
     return std::move(newPopulation);
-    // for (const auto& pair : fitness) {
-    //   std::cout << pair.first << ": " << pair.second << "\n";
-    // }
   }
 }

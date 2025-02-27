@@ -13,16 +13,16 @@ int main() {
   Heuristcs::SimulatedBinary crossoverHeuristic;
   Heuristcs::Gausian mutationHeuristic;
   std::vector<std::pair<int, double>> fitness;
-  double selectionCriteria = 10;
-  double percentageElite = 0.05;
+  double selectionCriteria = 2;
+  double percentageElite = 0.02;
   std::cout << "Starting" << "\n";
   auto start = std::chrono::high_resolution_clock::now();
-  std::vector<std::vector<double>> population = EA::GA().initialize(10000, 1000);
+  std::vector<std::vector<double>> population = EA::GA().initialize(10000, 100);
   for (int i = 0; i < 10000; i++) {
     population = EA::GA().iterate(population, selectionCriteria, percentageElite, selectionHeuristic, crossoverHeuristic, mutationHeuristic, benchmark);
     fitness = EA::GA().evaluate(population, benchmark);
-    // std::cout << "Top Fitness: " << fitness[0].second << " Top Index: " << fitness[0].first << "\n";
-    // std::cout << "Top Individual: " << population[0][0] << population[0][1] << population[0][2] << "\n";
+    std::cout << "Top Fitness: " << fitness[0].second << " Top Index: " << fitness[0].first << "\n";
+    std::cout << "Top Individual: " << population[0][0] << population[0][1] << population[0][2] << "\n";
   }
   // for (const auto& pair : fitness) {
   //   std::cout << "Top Fitness: " << pair.second << "\n";
