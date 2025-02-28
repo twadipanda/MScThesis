@@ -12,15 +12,15 @@ import Control.DeepSeq (force)
 kmeansDist :: U.Vector Double -> V.Vector (U.Vector Double) -> V.Vector Double
 kmeansDist point centers = V.map (euclideanDistance point) centers
 
-belongsTo :: V.Vector (U.Vector Double) -> V.Vector (U.Vector Double) -> V.Vector Int --indexes
+belongsTo :: V.Vector (U.Vector Double) -> V.Vector (U.Vector Double) -> U.Vector Int --indexes
 belongsTo points centers
-  | V.null points || V.null centers = V.empty
-  | otherwise = V.map (\p -> minIndex (kmeansDist p centers)) points
+  | V.null points || V.null centers = U.empty
+  | otherwise = U.convert $ V.map (\p -> minIndex (kmeansDist p centers)) points
   where
     minIndex dists = fromMaybe 0 (V.elemIndex (V.minimum dists) dists)
 
-pointsForCenters :: Int -> V.Vector Int -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double)
-pointsForCenters k assignments points = V.ifilter (\i _ -> assignments V.! i == k) points
+pointsForCenters :: Int -> U.Vector Int -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double)
+pointsForCenters k assignments points = V.ifilter (\i _ -> assignments U.! i == k) points
 
 vectorAdd :: V.Vector (U.Vector Double) -> U.Vector Double
 vectorAdd vecs = V.foldl1 (U.zipWith (+)) vecs
@@ -53,14 +53,6 @@ kmeans k iter points centers
   where
     assignments = belongsTo points centers
     genNewCenter i = vectorMean $ pointsForCenters i assignments points
-
--- kmeans :: Int -> Int -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double)
--- kmeans k iter points centers
---   | iter >= k = V.empty
---   | otherwise = V.cons (vectorMean kthPoints) (kmeans k (iter + 1) points centers)
---   where
---     assignments = belongsTo points centers
---     kthPoints = pointsForCenters iter assignments points
 
 kmeansIter :: Int -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double) -> V.Vector (U.Vector Double)
 kmeansIter k points initialCenters
