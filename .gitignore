@@ -1,3 +1,4 @@
 *.csv
 *.eventlog
 **/dist-newstyle
+**/build
