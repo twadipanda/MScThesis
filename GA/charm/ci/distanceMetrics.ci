@@ -1,7 +1,0 @@
-module distanceMetrics {
-
-  array [1D] DistanceMetrics {
-    entry DistanceMetrics();
-  };
-
-};

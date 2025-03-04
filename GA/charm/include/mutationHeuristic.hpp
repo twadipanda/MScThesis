@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace Heuristcs {
+// namespace Heuristcs {
 	class MutationHeuristic {
 		public:
     	virtual std::vector<double> mutate(std::vector<double>&) const = 0;
@@ -12,4 +12,4 @@ namespace Heuristcs {
 		public:
 			std::vector<double> mutate(std::vector<double>&) const override;
 	};
-}
+// }

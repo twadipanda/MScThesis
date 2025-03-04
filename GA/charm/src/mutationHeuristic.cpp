@@ -3,7 +3,7 @@
 #include <cmath>
 #include "mutationHeuristic.hpp"
 
-namespace Heuristcs {
+// namespace Heuristcs {
   std::vector<double> Gausian::mutate(std::vector<double>& offspring) const {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -16,4 +16,4 @@ namespace Heuristcs {
     }
     return std::move(offspring);
   }
-}
+// }

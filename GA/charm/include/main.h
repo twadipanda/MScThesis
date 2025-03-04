@@ -10,7 +10,8 @@ class Main : public CBase_Main {
   Main(CkMigrateMessage* msg);
 
   /// Entry Methods ///
-  void done();
-  void finished(const std::vector<double>&, int index);
+  void done(const std::vector<std::pair<int, double>>&);
+  void recieve(const std::vector<std::vector<double>>&);
+  void finished();
 
 };

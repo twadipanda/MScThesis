@@ -1,44 +1,45 @@
 CHARMDIR = ./charm-v7.0.0
 CHARMC = $(CHARMDIR)/bin/charmc $(OPTS)
 
-
 default: all
-all: distanceMetrics
+all: ga
 
 
-distanceMetrics : main.o distanceMetrics.o read.o kmeans.o
-	$(CHARMC) -language charm++ -o kmeans main.o distanceMetrics.o read.o kmeans.o
+ga : main.o benchmark.o crossover.o ga.o mutation.o selection.o
+	$(CHARMC) -language charm++ -o ga main.o benchmark.o crossover.o ga.o mutation.o selection.o
 
-main.o : app/main.cpp include/main.h main.decl.h main.def.h kmeans.decl.h
+main.o : app/main.cpp include/main.h main.decl.h main.def.h ga.decl.h
 	$(CHARMC) -I./include -I. -o main.o app/main.cpp
 
-distanceMetrics.o : src/distanceMetrics.cpp include/distanceMetrics.h
-	$(CHARMC) -I./include -I. -o distanceMetrics.o src/distanceMetrics.cpp
+ga.o : src/ga.cpp ga.decl.h ga.def.h main.decl.h
+	$(CHARMC) -I./include -I. -o ga.o src/ga.cpp
 
-kmeans.o : src/kmeans.cpp include/kmeans.h kmeans.decl.h kmeans.def.h main.decl.h
-	$(CHARMC) -I./include -I. -o kmeans.o src/kmeans.cpp
+benchmark.o : src/benchmark.cpp
+	$(CHARMC) -I./include -o benchmark.o src/benchmark.cpp
 
-read.o : src/read.cpp include/read.h
-	$(CHARMC) -I./include -o read.o src/read.cpp
+crossover.o : src/crossoverHeuristic.cpp
+	$(CHARMC) -I./include -o crossover.o src/crossoverHeuristic.cpp
 
-# distanceMetrics.decl.h distanceMetrics.def.h : ci/distanceMetrics.ci
-# 	$(CHARMC) ci/distanceMetrics.ci
+mutation.o : src/mutationHeuristic.cpp
+	$(CHARMC) -I./include -o mutation.o src/mutationHeuristic.cpp
 
-kmeans.decl.h kmeans.def.h : ci/kmeans.ci
-	$(CHARMC) ci/kmeans.ci
+selection.o : src/selectionHeuristic.cpp
+	$(CHARMC) -I./include -o selection.o src/selectionHeuristic.cpp
+
+ga.decl.h ga.def.h : ci/ga.ci
+	$(CHARMC) ci/ga.ci
 
 main.decl.h main.def.h : ci/main.ci
 	$(CHARMC) ci/main.ci
 
 clean:
-	rm -f main.decl.h main.def.h main.o
-	rm -f kmeans.decl.h kmeans.def.h kmeans.o
-	rm -f distanceMetrics.o
-	rm -f read.o
-	rm -f kmeans charmrun
+	rm -f main.decl.h main.def.h
+	rm -f main.o benchmark.o crossover.o ga.o mutation.o selection.o ga
+	rm -f ga.decl.h ga.def.h
+	rm -f charmrun
 
 run-quiet:
-	$(CHARMDIR)/bin/charmrun +p7 ./kmeans ++quiet
+	$(CHARMDIR)/bin/charmrun +p7 ./ga ++quiet
 
 run:
-	$(CHARMDIR)/bin/charmrun +p7 ./kmeans
+	$(CHARMDIR)/bin/charmrun +p7 ./ga

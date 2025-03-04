@@ -3,12 +3,13 @@ mainmodule main {
   readonly CProxy_Main mainProxy;
   readonly int numElements;
 
-  extern module kmeans;
+  extern module ga;
 
   mainchare Main {
     entry Main(CkArgMsg* msg);
-    entry void done();
-    entry void finished(const std::vector<double>&, int);
+    entry void done(const std::vector<std::pair<int, double>>& fitness);
+    entry void recieve(const std::vector<std::vector<double>>&);
+    entry void finished();
   };
 
 };
