@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include "read.h"
+#include "read.hpp"
 
 namespace KmeansParser {
     Reader::Reader(std::string fileName) : fileName{fileName} {};
