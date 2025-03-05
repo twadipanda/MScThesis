@@ -4,9 +4,11 @@
 class Kmeans : public CBase_Kmeans {
 
  public:
-
-  /// Constructors ///
-  Kmeans();
+  std::vector<std::vector<double>> centerPoints;
+  int counter_;
+  int size;
+  int ks;
+  Kmeans() : counter_(0), size(0), ks(0) {}
   Kmeans(CkMigrateMessage *msg);
 
   static std::vector<std::vector<double>> getInitialCenters(const std::vector<std::vector<double>>&, const int&);

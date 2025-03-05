@@ -26,7 +26,7 @@ int timesCalled;
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
-    numElements = 1000;
+    numElements = 100;
     kmeansArray = CProxy_Kmeans::ckNew(numElements);
     counter = 0;
     mainProxy = thisProxy;
@@ -36,7 +36,7 @@ Main::Main(CkArgMsg* msg) {
     KmeansParser::Reader reader("letter.txt");
     points = reader.readAndParse();
     centers = Kmeans::getInitialCenters(points, k);
-    new_centers.reserve(k);
+    new_centers.resize(k);
     maxCompute = points.size() * centers.size();
     distances.resize(points.size());
     start = std::chrono::high_resolution_clock::now();
@@ -76,8 +76,8 @@ void Main::finished(const std::vector<double>& centerPoint, int k_) {
         timesCalled = 0;
         if (centers != new_centers) {
             centers = new_centers;
-            new_centers.clear();
             iterations++;
+            // std::cout << iterations << "\n";
             kmeansArray[0].computeDistance(points, centers);
         }
         else {

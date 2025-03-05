@@ -10,18 +10,12 @@
 extern CProxy_Main mainProxy;
 extern /* readonly */ int numElements;
 
-// std::vector<std::pair<int, std::vector<double>>> centerPoints;
-std::vector<std::vector<double>> centerPoints;
-int counter_;
-int size;
-int ks;
-
-Kmeans::Kmeans() {};
+// Kmeans::Kmeans() {};
 Kmeans::Kmeans(CkMigrateMessage *msg) {};
 
 std::vector<std::vector<double>> Kmeans::getInitialCenters(const std::vector<std::vector<double>>& points, const int& k) {
     if (k > points.size()) {
-        CkPrintf("Error: k (%d) exceeds number of points (%lu)\n", k, points.size());
+        // CkPrintf("Error: k (%d) exceeds number of points (%lu)\n", k, points.size());
         CkExit();
     }
     std::vector<std::vector<double>> centers;
@@ -35,6 +29,7 @@ void Kmeans::computeDistance(const std::vector<std::vector<double>>& points,
     const std::vector<std::vector<double>>& centers) {
         size = points.size();
         ks = centers.size();
+        centerPoints.clear();
         counter_ = 0;
         std::vector<std::vector<double>> distances;
         int pointIndex = 0;
@@ -67,38 +62,51 @@ void Kmeans::computeDistancePar(const std::vector<std::vector<double>>& centers,
         distance.push_back(distance_metrics.computeDistance(center, point));
     }
     int k = minIndex(distance);
-    // centerPoints.push_back(std::make_pair(k, point));
+    // std::cout << "INDEX: " << thisIndex << " K: " << k << "\n";
+    // CkPrintf("CDP INDEX: %d K: %d \n", thisIndex, k);
     thisProxy[k].reduce(point);
 }
 
 void Kmeans::reduce(const std::vector<double>& point) {
+    // CkPrintf("INDEX: %d Size: %d \n", thisIndex, centerPoints.size());
     centerPoints.push_back(point);
+    // std::cout << "INDEX: " << thisIndex << " " << centerPoints.size() << "\n";
+    // CkPrintf("REDUCE INDEX: %d SIZE: %d K: %d \n", thisIndex, centerPoints.size(), k);
     thisProxy[0].received();
 }
 
 void Kmeans::received() {
-    counter_++;
-    if (counter_ == size) {
-        for (int i = 0; i < ks; i++) {
-            thisProxy[i].done();
+    if (thisIndex == 0)
+    {
+        counter_++;
+        if (counter_ == size) {
+            counter_ = 0;
+            for (int i = 0; i < ks; i++) {
+                thisProxy[i].done();
+            }
         }
     }
 }
 
 void Kmeans::done() {
-    int size = centerPoints.size();
-    if (size > 1) {
-        std::vector<double> result;
-        result = add(centerPoints[0], centerPoints[1]);
-        for (int i = 2; i < size; i++) {
+    // std::vector<std::vector<double>> tempCenterPoints = centerPoints;
+    // centerPoints.clear();
+    // std::cout << "INDEX: " << thisIndex << " " << centerPoints.size() << "\n";
+    // CkPrintf("DONE INDEX: %d SIZE: %d K: %d \n", thisIndex, centerPoints.size(), k);
+    int size_ = centerPoints.size();
+    if (size_ > 1) {
+        std::vector<double> result = add(centerPoints[0], centerPoints[1]);
+        for (int i = 2; i < size_; i++) {
             result = add(result, centerPoints[i]);
         }
-        result = div(result, size);
+        result = div(result, size_);
         mainProxy.finished(result, thisIndex);
     }
     else {
         mainProxy.finished(centerPoints[0], thisIndex);
     }
+    // std::cout << "INDEX: " << thisIndex << "\n";
+    centerPoints.clear();
 }
 
 int Kmeans::minIndex(const std::vector<double>& distances) {
