@@ -14,6 +14,9 @@ class Kmeans : public CBase_Kmeans {
     const std::vector<std::vector<double>>&);
   void computeDistancePar(const std::vector<std::vector<double>>&,
     const std::vector<double>&, int);
+  void done();
+  void received();
+  void reduce(const std::vector<double>&);
   static int minIndex(const std::vector<double>&);
   static std::vector<std::vector<double>> computeNewCenters(const std::vector<std::vector<double>>&, const std::vector<std::vector<double>>&, int);
   static std::vector<double> add(const std::vector<double>&, const std::vector<double>&);

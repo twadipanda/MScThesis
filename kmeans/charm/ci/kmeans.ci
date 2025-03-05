@@ -4,6 +4,9 @@ module kmeans {
     entry Kmeans();
     entry void computeDistance(const std::vector<std::vector<double>>&, const std::vector<std::vector<double>>&);
     entry void computeDistancePar(const std::vector<std::vector<double>>&, const std::vector<double>&, int);
+    entry void done();
+    entry void received();
+    entry void reduce(const std::vector<double>&);
   };
 
 };

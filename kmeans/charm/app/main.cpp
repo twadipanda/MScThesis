@@ -17,6 +17,7 @@ int maxCompute;
 std::vector<std::vector<double>> distances;
 std::vector<std::vector<double>> points;
 std::vector<std::vector<double>> centers;
+std::vector<std::vector<double>> new_centers;
 CProxy_Kmeans kmeansArray;
 int k;
 int iterations;
@@ -25,16 +26,17 @@ int timesCalled;
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
-    numElements = 5000;
+    numElements = 1000;
     kmeansArray = CProxy_Kmeans::ckNew(numElements);
     counter = 0;
     mainProxy = thisProxy;
-    k = 16;
+    k = 26;
     timesCalled = 0;
     iterations = 1;
     KmeansParser::Reader reader("letter.txt");
     points = reader.readAndParse();
     centers = Kmeans::getInitialCenters(points, k);
+    new_centers.reserve(k);
     maxCompute = points.size() * centers.size();
     distances.resize(points.size());
     start = std::chrono::high_resolution_clock::now();
@@ -46,18 +48,37 @@ Main::Main(CkArgMsg* msg) {
 // NOTE: This constructor does not need to appear in the ".ci" file
 Main::Main(CkMigrateMessage* msg) { }
 
-void Main::finished(const std::vector<double>& distance, int index) {
-    distances[index] = distance;
+// void Main::finished(const std::vector<double>& distance, int index) {
+//     distances[index] = distance;
+//     timesCalled++;
+//     if (timesCalled == points.size()) {
+//         timesCalled = 0;
+//         std::vector<std::vector<double>> new_centers = Kmeans::computeNewCenters(points, distances, k);
+//         if (centers != new_centers) {
+//             centers = new_centers;
+//             iterations++;
+//             distances.clear();
+//             distances.resize(points.size());
+//             kmeansArray[0].computeDistance(points, new_centers);
+//         }
+//         else {
+//             std::cout << centers[0][0] << "\n";
+//             std::cout << new_centers[0][0] << "\n";
+//             done();
+//         }
+//     }
+// }
+
+void Main::finished(const std::vector<double>& centerPoint, int k_) {
     timesCalled++;
-    if (timesCalled == points.size()) {
+    new_centers[k_] = centerPoint;
+    if (timesCalled == k) {
         timesCalled = 0;
-        std::vector<std::vector<double>> new_centers = Kmeans::computeNewCenters(points, distances, k);
         if (centers != new_centers) {
             centers = new_centers;
+            new_centers.clear();
             iterations++;
-            distances.clear();
-            distances.resize(points.size());
-            kmeansArray[0].computeDistance(points, new_centers);
+            kmeansArray[0].computeDistance(points, centers);
         }
         else {
             std::cout << centers[0][0] << "\n";
