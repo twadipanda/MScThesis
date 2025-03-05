@@ -1,17 +1,7 @@
 module ga {
-
-  class SelectionHeuristic;
-  class CrossoverHeuristic;
-  class MutationHeuristic;
-  namespace Bench {
-    class BenchMark;
-  }
-
   array [1D] GA {
-    entry void iterate(std::vector<std::vector<double>>& population, double retention, double elite,
-    const SelectionHeuristic& selectionHeuristic, const CrossoverHeuristic& crossoverHeuristic,
-    const MutationHeuristic& mutationHeuristic, const Bench::BenchMark& benchmark);
-    entry void reproduce(std::vector<double>&, std::vector<double>&, std::vector<double>&, const CrossoverHeuristic&, const MutationHeuristic&);
+    entry void iterate(const std::vector<std::vector<double>>& population, double retention, double elite);
+    entry void reproduce(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&);
   };
 
 };

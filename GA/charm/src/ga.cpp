@@ -3,8 +3,8 @@
 #include <cmath>
 #include <iostream>
 #include "ga.decl.h"
-#include "ga.h"
 #include "main.decl.h"
+#include "ga.h"
 #include "benchmark.hpp"
 #include "selectionHeuristic.hpp"
 #include "crossoverHeuristic.hpp"
@@ -13,7 +13,7 @@
 extern CProxy_Main mainProxy;
 extern /* readonly */ int numElements;
 
-namespace EA {
+// namespace EA {
   GA::GA(CkMigrateMessage *msg) {};
 
   std::vector<std::vector<double>> GA::initialize(int populationSize, int individualSize) {
@@ -34,8 +34,9 @@ namespace EA {
     return std::move(population);
   }
 
-  std::vector<std::pair<int, double>> GA::evaluate(std::vector<std::vector<double>>& population, const Bench::BenchMark& benchmark) {
+  std::vector<std::pair<int, double>> GA::evaluate(const std::vector<std::vector<double>>& population) {
     std::vector<std::pair<int, double>> fitness;
+    Bench::Sphere benchmark;
     fitness.reserve(population.size());
     for (int i = 0; i < population.size(); i++) {
       fitness.push_back(std::make_pair(i, benchmark.fitness(population[i])));
@@ -43,16 +44,15 @@ namespace EA {
     return std::move(fitness);
   }
 
-  void GA::iterate(std::vector<std::vector<double>>& population, double retention, double elite,
-    const SelectionHeuristic& selectionHeuristic, const CrossoverHeuristic& crossoverHeuristic,
-    const MutationHeuristic& mutationHeuristic, const Bench::BenchMark& benchmark) {
-      std::vector<std::pair<int, double>> fitness = evaluate(population, benchmark);
+  void GA::iterate(const std::vector<std::vector<double>>& population, double retention, double elite) {
+      Tournament selectionHeuristic;
+      std::vector<std::pair<int, double>> fitness = evaluate(population);
       std::vector<double> params = {elite, retention};
       std::vector<double> distributionIndex = {2};
       std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population, fitness, params);
       int chareIndex = 1;
       std::vector<std::vector<double>> elites;
-      for (int i = 0; i < std::floor(size*elite); i++) {
+      for (int i = 0; i < std::floor(population.size()*elite); i++) {
         elites.push_back(selectedPopulation[i]);
       }
       mainProxy.recieve(elites);
@@ -60,19 +60,20 @@ namespace EA {
         if (chareIndex == (numElements - 1)) {
           chareIndex = 1;
         }
-        thisProxy[chareIndex].reproduce(selectedPopulation[i], selectedPopulation[i+1], distributionIndex, crossoverHeuristic, mutationHeuristic);
+        thisProxy[chareIndex].reproduce(selectedPopulation[i], selectedPopulation[i+1], distributionIndex);
         chareIndex++;
       }
-      mainProxy.finished();
+      // mainProxy.finished();
   }
 
-  void GA::reproduce(std::vector<double>& par1, std::vector<double>& par2, std::vector<double>& distributionIndex,
-    const CrossoverHeuristic& crossoverHeuristic, const MutationHeuristic& mutationHeuristic) {
+  void GA::reproduce(const std::vector<double>& par1, const std::vector<double>& par2, const std::vector<double>& distributionIndex) {
+    SimulatedBinary crossoverHeuristic;
+    Gausian mutationHeuristic;
     std::vector<std::vector<double>> offsprings = crossoverHeuristic.crossover(par1, par2, distributionIndex);
     offsprings[0] = mutationHeuristic.mutate(offsprings[0]);
     offsprings[1] = mutationHeuristic.mutate(offsprings[1]);
     mainProxy.recieve(offsprings);
   }
-}
+// }
 
 #include "ga.def.h"

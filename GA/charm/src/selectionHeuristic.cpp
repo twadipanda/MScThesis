@@ -5,7 +5,7 @@
 #include <random>
 #include "selectionHeuristic.hpp"
 
-std::vector<std::vector<double>> Tournament::select(std::vector<std::vector<double>>& population, std::vector<std::pair<int, double>>& fitness, std::vector<double>& params) const {
+std::vector<std::vector<double>> Tournament::select(const std::vector<std::vector<double>>& population, std::vector<std::pair<int, double>>& fitness, std::vector<double>& params) const {
   if (params.size() < 2) {
     throw std::invalid_argument("Eliteness and Selection Criteria not provided for tournament selection...");
   }
@@ -19,7 +19,7 @@ std::vector<std::vector<double>> Tournament::select(std::vector<std::vector<doub
   int randomInt = size;
   int temp = 0;
   newPopulation.reserve(size);
-  std::sort(fitness.begin(), fitness.end(), [](const auto& a, const auto& b) {
+  std::sort(fitness.begin(), fitness.end(), [](const std::pair<int, double>& a, const std::pair<int, double>& b) {
     return a.second < b.second;
   });
   for (int i = 0; i < elites; i++) {

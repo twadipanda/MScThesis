@@ -22,20 +22,20 @@ CProxy_GA gaArray;
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
-  Bench::Sphere benchmark;
-  Tournament selectionHeuristic;
-  SimulatedBinary crossoverHeuristic;
-  Gausian mutationHeuristic;
+  // Bench::Sphere benchmark;
+  // Tournament selectionHeuristic;
+  // SimulatedBinary crossoverHeuristic;
+  // Gausian mutationHeuristic;
   double selectionCriteria = 2;
   double percentageElite = 0.02;
-  numElements = 1000;
+  numElements = 100;
   gaArray = CProxy_GA::ckNew(numElements);
   mainProxy = thisProxy;
   iterations = 0;
   std::cout << "Starting" << "\n";
   start = std::chrono::high_resolution_clock::now();
-  population = EA::GA::initialize(10000, 100);
-  gaArray[0].iterate(population, selectionCriteria, percentageElite, selectionHeuristic, crossoverHeuristic, mutationHeuristic, benchmark);
+  population = GA::initialize(10000, 100);
+  gaArray[0].iterate(population, selectionCriteria, percentageElite);
   population.clear();
 }
 
@@ -48,17 +48,20 @@ void Main::recieve(const std::vector<std::vector<double>>& offsprings) {
   for (std::vector<double> offspring : offsprings) {
     population.push_back(offspring);
   }
+  if (population.size() == 10000) {
+    finished();
+  }
 }
 
 void Main::finished() {
-  Bench::Sphere benchmark;
-  Tournament selectionHeuristic;
-  SimulatedBinary crossoverHeuristic;
-  Gausian mutationHeuristic;
+  // Bench::Sphere benchmark;
+  // Tournament selectionHeuristic;
+  // SimulatedBinary crossoverHeuristic;
+  // Gausian mutationHeuristic;
   double selectionCriteria = 2;
   double percentageElite = 0.02;
   iterations++;
-  std::vector<std::pair<int, double>> fitness = EA::GA::evaluate(population, benchmark);
+  std::vector<std::pair<int, double>> fitness = GA::evaluate(population);
   std::sort(fitness.begin(), fitness.end(), [](const std::pair<int, double>& a, const std::pair<int, double>& b) {
     return a.second < b.second;
   });
@@ -66,7 +69,7 @@ void Main::finished() {
     done(fitness);
   }
   else {
-    gaArray[0].iterate(population, selectionCriteria, percentageElite, selectionHeuristic, crossoverHeuristic, mutationHeuristic, benchmark);
+    gaArray[0].iterate(population, selectionCriteria, percentageElite);
     population.clear();
   }
 }

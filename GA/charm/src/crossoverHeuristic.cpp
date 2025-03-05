@@ -5,8 +5,8 @@
 #include <algorithm>
 #include "crossoverHeuristic.hpp"
 
-std::vector<std::vector<double>> SimulatedBinary::crossover(std::vector<double>& par1,
-std::vector<double>& par2, std::vector<double>& params) const {
+std::vector<std::vector<double>> SimulatedBinary::crossover(const std::vector<double>& par1,
+const std::vector<double>& par2, const std::vector<double>& params) const {
   if (params.size() < 1) {
     throw std::invalid_argument("Hyperparameters not provided for SBX...");
   }
