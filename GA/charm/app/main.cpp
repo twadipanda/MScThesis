@@ -29,13 +29,31 @@ Main::Main(CkArgMsg* msg) {
   double selectionCriteria = 2;
   double percentageElite = 0.02;
   numElements = 100;
-  gaArray = CProxy_GA::ckNew(numElements);
   mainProxy = thisProxy;
+
+  try {
+    gaArray = CProxy_GA::ckNew(numElements);
+    // std::cout << "GA array created successfully\n";
+  } catch (const std::exception& e) {
+    // CkPrintf("Error creating GA array: %s\n", e.what());
+    CkExit();
+  }
   iterations = 0;
-  std::cout << "Starting" << "\n";
+  // std::cout << "Starting" << "\n";
   start = std::chrono::high_resolution_clock::now();
-  population = GA::initialize(10000, 100);
-  gaArray[0].iterate(population, selectionCriteria, percentageElite);
+  try {
+    population = GA::initialize(10000, 100);
+  } catch (const std::exception& e) {
+    std::cerr << "Error creating initialising: " << e.what() << std::endl;
+    CkExit();
+  }
+  // std::cout << "Calling iterate on gaArray[0]" << std::endl;
+  try {
+    gaArray[0].iterate(population, selectionCriteria, percentageElite);
+  } catch (const std::exception& e) {
+    std::cerr << "Error ITERATEing: " << e.what() << std::endl;
+    CkExit();
+  }
   population.clear();
 }
 
@@ -54,10 +72,6 @@ void Main::recieve(const std::vector<std::vector<double>>& offsprings) {
 }
 
 void Main::finished() {
-  // Bench::Sphere benchmark;
-  // Tournament selectionHeuristic;
-  // SimulatedBinary crossoverHeuristic;
-  // Gausian mutationHeuristic;
   double selectionCriteria = 2;
   double percentageElite = 0.02;
   iterations++;
@@ -69,8 +83,10 @@ void Main::finished() {
     done(fitness);
   }
   else {
-    gaArray[0].iterate(population, selectionCriteria, percentageElite);
+    // std::cout << "Current Fitness: " << fitness[0].second << "\n";
+    std::vector<std::vector<double>> tempPopulation = population;
     population.clear();
+    gaArray[0].iterate(tempPopulation, selectionCriteria, percentageElite);
   }
 }
 
@@ -80,10 +96,10 @@ void Main::finished() {
 void Main::done(const std::vector<std::pair<int, double>>& fitness) {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cout << "Finished!" << "\n";
-    std::cout << "Took " << iterations << " iterations!\n";
-    std::cout << "Top Fitness: " << fitness[0].second << " Top Index: " << fitness[0].first << "\n";
-    std::cout << "Execution time: " << elapsed.count() << " seconds\n";
+    // std::cout << "Finished!" << "\n";
+    std::cout << iterations << ",";
+    std::cout << fitness[0].second << ",";
+    std::cout << elapsed.count();
     CkExit();
 }
 

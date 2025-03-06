@@ -14,7 +14,8 @@ extern CProxy_Main mainProxy;
 extern /* readonly */ int numElements;
 
 // namespace EA {
-  GA::GA(CkMigrateMessage *msg) {};
+  GA::GA() {}
+  GA::GA(CkMigrateMessage *msg) {}
 
   std::vector<std::vector<double>> GA::initialize(int populationSize, int individualSize) {
     std::vector<std::vector<double>> population;
@@ -45,6 +46,7 @@ extern /* readonly */ int numElements;
   }
 
   void GA::iterate(const std::vector<std::vector<double>>& population, double retention, double elite) {
+    try {
       Tournament selectionHeuristic;
       std::vector<std::pair<int, double>> fitness = evaluate(population);
       std::vector<double> params = {elite, retention};
@@ -63,6 +65,10 @@ extern /* readonly */ int numElements;
         thisProxy[chareIndex].reproduce(selectedPopulation[i], selectedPopulation[i+1], distributionIndex);
         chareIndex++;
       }
+    } catch (const std::exception& e) {
+      std::cerr << "Error iterating: " << e.what() << std::endl;
+      CkExit();
+    }
       // mainProxy.finished();
   }
 

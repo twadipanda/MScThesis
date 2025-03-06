@@ -9,6 +9,7 @@
 // namespace EA {
 class GA : public CBase_GA {
   public:
+  GA();
   GA(CkMigrateMessage *msg);
   static std::vector<std::vector<double>> initialize(int populationSize, int individualSize);
   static std::vector<std::pair<int, double>> evaluate(const std::vector<std::vector<double>>&);

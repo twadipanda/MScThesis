@@ -9,7 +9,6 @@ mainmodule main {
     entry Main(CkArgMsg* msg);
     entry void done(const std::vector<std::pair<int, double>>& fitness);
     entry void recieve(const std::vector<std::vector<double>>&);
-    entry void finished();
   };
 
 };
