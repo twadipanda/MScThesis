@@ -1,0 +1,16 @@
+module Main where
+
+import GA (initializePopulation, evaluate)
+import Benchmark (sphere)
+import Heuristics (simiulatedBinary, gaussianMutate)
+import Helpers (beta)
+
+main :: IO ()
+main = do 
+  population <- initializePopulation 10 10
+  -- print population
+  print $ evaluate population sphere
+  print $ simiulatedBinary [-1,-2,-3] [-4,-5,-6] 0.5
+  beta_ <- beta 0.5
+  print beta_
+  print $ gaussianMutate [1,2,3] [0.1, 0.5, 0.0] [3, 100, 1]
