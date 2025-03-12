@@ -43,7 +43,7 @@ gaIterate iter population elites selectionSize distributionIndex
     let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize
     let elitePop = take elites selectedPopulation
     let nonElitePop = drop elites selectedPopulation
-    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div populationSize 2) nonElitePop) (drop (div populationSize 2) nonElitePop)
+    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div (populationSize - elites) 2) nonElitePop) (drop (div (populationSize - elites) 2) nonElitePop)
     let offspringSize = length $ offspring!!0
     randNM <- randomNumbers offspringSize 9
     normalN <- normalNoise offspringSize
