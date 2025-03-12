@@ -20,33 +20,33 @@ gaIterate :: Int -> [[Double]] -> Int -> Int -> Double -> IO ()
 gaIterate iter population elites selectionSize distributionIndex
   | iter == 10000 = do
     putStrLn $ "Terminated after " ++ show iter ++ " iterations."
-    -- print $ evaluate population sphere
   | iter `mod` 100 == 0 = do
     putStrLn $ "Iteration " ++ show iter
-    -- print $ evaluate population sphere
-    print $ length $ evaluate population sphere
     print $ minimum $ evaluate population sphere
     let populationSize = length population
     beta_ <- beta distributionIndex
-    randNS <- randomNumbers (populationSize*selectionSize) populationSize
+    randNS <- randomNumbers (populationSize*selectionSize) (populationSize - 1)
     let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize
-    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div populationSize 2) selectedPopulation) (drop (div populationSize 2) selectedPopulation)
+    let elitePop = take elites selectedPopulation
+    let nonElitePop = drop elites selectedPopulation
+    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div (populationSize - elites) 2) nonElitePop) (drop (div (populationSize - elites) 2) nonElitePop)
     let offspringSize = length $ offspring!!0
-    randNM <- randomNumbers offspringSize 10
+    randNM <- randomNumbers offspringSize 9
     normalN <- normalNoise offspringSize
     let mutated = map (\x -> gaussianMutate x (randNM) (normalN)) offspring
-    let newPopulation = mutated
-    -- print $ evaluate newPopulation sphere
+    let newPopulation = elitePop ++ mutated
     gaIterate (iter+1) newPopulation elites selectionSize distributionIndex
   | otherwise = do
     let populationSize = length population
     beta_ <- beta distributionIndex
-    randNS <- randomNumbers (populationSize*selectionSize) populationSize
+    randNS <- randomNumbers (populationSize*selectionSize) (populationSize - 1)
     let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize
-    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div populationSize 2) selectedPopulation) (drop (div populationSize 2) selectedPopulation)
+    let elitePop = take elites selectedPopulation
+    let nonElitePop = drop elites selectedPopulation
+    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div populationSize 2) nonElitePop) (drop (div populationSize 2) nonElitePop)
     let offspringSize = length $ offspring!!0
-    randNM <- randomNumbers offspringSize 10
+    randNM <- randomNumbers offspringSize 9
     normalN <- normalNoise offspringSize
     let mutated = map (\x -> gaussianMutate x (randNM) (normalN)) offspring
-    let newPopulation = mutated
+    let newPopulation = elitePop ++ mutated
     gaIterate (iter+1) newPopulation elites selectionSize distributionIndex
