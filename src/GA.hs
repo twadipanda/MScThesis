@@ -16,26 +16,11 @@ initializePopulation numIndividual chromosome  = do
 evaluate :: [[Double]] -> ([Double] -> Double) -> [Double]
 evaluate population f = map f population
 
-gaIterate :: Int -> [[Double]] -> Int -> Int -> Double -> IO ()
+gaIterate :: Int -> [[Double]] -> Int -> Int -> Double -> IO (Double)
 gaIterate iter population elites selectionSize distributionIndex
   | iter == 10000 = do
-    putStrLn $ "Terminated after " ++ show iter ++ " iterations."
-  | iter `mod` 100 == 0 = do
-    putStrLn $ "Iteration " ++ show iter
-    print $ minimum $ evaluate population sphere
-    let populationSize = length population
-    beta_ <- beta distributionIndex
-    randNS <- randomNumbers (populationSize*selectionSize) (populationSize - 1)
-    let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize
-    let elitePop = take elites selectedPopulation
-    let nonElitePop = drop elites selectedPopulation
-    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div (populationSize - elites) 2) nonElitePop) (drop (div (populationSize - elites) 2) nonElitePop)
-    let offspringSize = length $ offspring!!0
-    randNM <- randomNumbers offspringSize 9
-    normalN <- normalNoise offspringSize
-    let mutated = map (\x -> gaussianMutate x (randNM) (normalN)) offspring
-    let newPopulation = elitePop ++ mutated
-    gaIterate (iter+1) newPopulation elites selectionSize distributionIndex
+    putStrLn "Iterations completed"
+    return $ minimum $ evaluate population sphere
   | otherwise = do
     let populationSize = length population
     beta_ <- beta distributionIndex
