@@ -1,5 +1,7 @@
 module Main where
 
+import Control.DeepSeq
+import Control.Exception (evaluate)
 import Criterion.Measurement
 import GA (initializePopulation, gaIterate)
 
@@ -8,7 +10,8 @@ main = do
   start <- getTime
   population <- initializePopulation 5000 100
   fitness <- gaIterate 0 population 200 2 2.0
-  putStrLn $ "Final fitness: " ++ show fitness
+  evaluated <- evaluate (force fitness)
+  --putStrLn $ "Final fitness: " ++ show fitness
   end <- getTime
   let timeTaken = end - start
-  putStrLn $ "Time Taken: " ++ show timeTaken
+  putStrLn $ show evaluated ++ "," ++ show timeTaken                                             
