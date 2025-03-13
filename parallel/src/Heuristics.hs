@@ -27,4 +27,4 @@ tournamentSelectionHelper sorted selectionIndexes elites selectionSize
 
 tournamentSelection :: [[Double]] -> [Double] -> [Int] -> Int -> Int -> [[Double]]
 tournamentSelection population fitness selectionIndexes elites selectionSize = 
-    (map (\x -> population !! snd x) $ tournamentSelectionHelper (sortFitness fitness) selectionIndexes elites selectionSize) `using` parList rdeepseq
+    (map (\x -> population !! snd x) $ tournamentSelectionHelper (sortFitness fitness) selectionIndexes elites selectionSize)
