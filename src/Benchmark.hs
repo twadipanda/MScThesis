@@ -1,4 +1,7 @@
 module Benchmark (sphere) where
 
-sphere :: [Double] -> Double
-sphere individual = sum $ map (\x -> x ^ 2) individual
+import Particle
+
+sphere :: [Particle] -> Particle
+sphere particle = (Particle (particle position) (particle velocity) (particle bestPosition) (sum $ map (\x -> x ^ 2) (particle position)))
+-- sphere individual = sum $ map (\x -> x ^ 2) individual
