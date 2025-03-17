@@ -30,10 +30,10 @@ Main::Main(CkArgMsg* msg) {
     kmeansArray = CProxy_Kmeans::ckNew(numElements);
     counter = 0;
     mainProxy = thisProxy;
-    k = 26;
+    k = 25;
     timesCalled = 0;
     iterations = 1;
-    KmeansParser::Reader reader("letter.txt");
+    KmeansParser::Reader reader("worms_64d.txt");
     points = reader.readAndParse();
     centers = Kmeans::getInitialCenters(points, k);
     new_centers.resize(k);
@@ -94,9 +94,9 @@ void Main::finished(const std::vector<double>& centerPoint, int k_) {
 void Main::done() {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cout << "Finished!" << "\n";
-    std::cout << "Took " << iterations << " iterations!\n";
-    std::cout << "Execution time: " << elapsed.count() << " seconds\n";
+    // std::cout << "Finished!" << "\n";
+    // std::cout << "Took " << iterations << " iterations!\n";
+    std::cout << elapsed.count();
     CkExit();
 }
 

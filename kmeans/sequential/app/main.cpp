@@ -6,13 +6,12 @@
 #include "kmeans.hpp"
 
 int main() {
-    KmeansParser::Reader reader("letter.txt");
+    KmeansParser::Reader reader("worms_64d.txt");
     std::vector<std::vector<double>> points = reader.readAndParse();
     DM::DistanceMetrics distance_metrics;
     Kmeans::Kmeans kmeans;
     int iterations = 0;
-    int k = 16;
-    std::cout << "Starting" << "\n";
+    int k = 25;
     auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::vector<double>> centers = kmeans.getInitialCenters(points, k);
     std::vector<std::vector<double>> distances = kmeans.computeDistance(points, centers, &DM::DistanceMetrics::euclideanDistance, distance_metrics);
@@ -25,7 +24,6 @@ int main() {
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cout << "Finished!" << "\n";
-    std::cout << "Took " << iterations << " iterations!\n";
-    std::cout << "Execution time: " << elapsed.count() << " seconds\n";
+    // std::cout << "Took " << iterations << " iterations!\n";
+    std::cout << elapsed.count();
 };
