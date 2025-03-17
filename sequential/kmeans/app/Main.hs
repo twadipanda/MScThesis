@@ -12,7 +12,7 @@ main = do
     parsed <- evaluate $ force $ parseInput points
     centers <- evaluate $ force $ getCenters 25 parsed
     start <- getTime
-    _ <- evaluate $ force $ kmeansIter 25 parsed centers
+    _ <- evaluate $ force $ kmeansIter 25 0 parsed centers
     end <- getTime
     let timeTaken = end - start
     print timeTaken
