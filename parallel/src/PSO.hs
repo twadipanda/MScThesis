@@ -24,8 +24,8 @@ globalBest particles globalBestParticle = foldl (\best particle -> if bestFitnes
 
 updateParticle :: Particle -> Particle -> [Double] -> [Double] -> Double -> Double -> Double -> Particle
 updateParticle particle globalBestParticle r1 r2 intertia cognitive social = Particle (zipWith (+) (position particle) velocityComponent) velocityComponent (bestPosition particle) (bestFitness particle)
-  where cognitiveComponent = zipWith (\x y -> x * cognitive * y) (zipWith (-) (bestPosition particle) (position particle)) r1 `using` parList rdeepseq
-        socialComponent = zipWith (\x y -> x * social * y) (zipWith (-) (position globalBestParticle) (position particle)) r2 `using` parList rdeepseq
+  where cognitiveComponent = zipWith (\x y -> x * cognitive * y) (zipWith (-) (bestPosition particle) (position particle)) r1
+        socialComponent = zipWith (\x y -> x * social * y) (zipWith (-) (position globalBestParticle) (position particle)) r2
         velocityComponent = zipWith3 (\x y z -> (x * intertia) + y + z) (velocity particle) cognitiveComponent socialComponent `using` parList rdeepseq
 
 update :: [Particle] -> Particle -> Double -> Double -> Double -> IO [Particle]
