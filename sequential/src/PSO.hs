@@ -27,18 +27,21 @@ updateParticle particle globalBestParticle r1 r2 intertia cognitive social = Par
         socialComponent = zipWith (\x y -> x * social * y) (zipWith (-) (position globalBestParticle) (position particle)) r2
         velocityComponent = zipWith3 (\x y z -> (x * intertia) + y + z) (velocity particle) cognitiveComponent socialComponent
 
--- update :: [Particle] -> Particle -> Double -> Double -> Double -> Double -> IO([Particle])
--- update particles globalBestParticle intertia cognitive social = do
---   gen1 <- newStdGen
---   gen2 <- newStdGen
---   let r1 = randomRs (0, 1) gen1 :: [Double]
---   let r2 = randomRs (0, 1) gen2 :: [Double]
---   return $ map (\particle -> updateParticle particle globalBestParticle r1 r2 intertia cognitive social) particles
+update :: [Particle] -> Particle -> Double -> Double -> Double -> IO [Particle]
+update particles globalBestParticle intertia cognitive social = do
+  gen1 <- newStdGen
+  gen2 <- newStdGen
+  let len = length particles
+  let dim = length (position globalBestParticle) 
+  let r1 = take (len * dim) $ randomRs (0, 1) gen1 :: [Double]
+  let r2 = take (len * dim) $ randomRs (0, 1) gen2 :: [Double]
+  return $ zipWith3 (\particle r1_ r2_ -> updateParticle particle globalBestParticle r1_ r2_ intertia cognitive social) particles (chunksOf dim r1) (chunksOf dim r2)
 
--- update :: [Particle] -> Particle -> Double -> Double -> Double -> Double -> IO [Particle]
--- update particles globalBestParticle intertia cognitive social = do
---   gen1 <- newStdGen
---   gen2 <- newStdGen
---   let r1 = randomRs (0, 1) gen1 :: [Double]
---   let r2 = randomRs (0, 1) gen2 :: [Double]
---   return $ map (\particle -> updateParticle particle globalBestParticle r1 r2 intertia cognitive social) particles
+psoIterate :: Int -> [Particle] -> (Particle -> Particle) -> Particle -> Double -> Double -> Double -> IO [Particle]
+psoIterate 0 particles f globalBestParticle _ _ _ = do
+  return particles
+psoIterate n particles f globalBestParticle intertia cognitive social = do
+  let particles_ = evaluate particles f
+  let globalBestParticle_ = globalBest particles_ globalBestParticle
+  particles__ <- update particles_ globalBestParticle intertia cognitive social
+  psoIterate (n - 1) particles__ f globalBestParticle_ intertia cognitive social
