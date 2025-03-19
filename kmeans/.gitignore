@@ -1,8 +1,0 @@
-build/
-**/build/
-**/charm-v7.0.0
-*.o
-*.h
-*.gz
-*.projrc
-*.sts
