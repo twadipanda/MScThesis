@@ -1,0 +1,75 @@
+\begin{theindex}
+
+  \item {add}
+    \subitem {Kmeans::Kmeans}, \hyperpage{10}
+  \item {app/main.cpp}, \hyperpage{15}
+
+  \indexspace
+
+  \item {computeDistance}
+    \subitem {Kmeans::Kmeans}, \hyperpage{10}
+  \item {computeNewCenters}
+    \subitem {Kmeans::Kmeans}, \hyperpage{11}
+
+  \indexspace
+
+  \item {div}
+    \subitem {Kmeans::Kmeans}, \hyperpage{11}
+  \item {DM}, \hyperpage{7}
+  \item {DM::DistanceMetrics}, \hyperpage{9}
+    \subitem {euclideanDistance}, \hyperpage{9}
+
+  \indexspace
+
+  \item {euclideanDistance}
+    \subitem {DM::DistanceMetrics}, \hyperpage{9}
+
+  \indexspace
+
+  \item {getInitialCenters}
+    \subitem {Kmeans::Kmeans}, \hyperpage{12}
+
+  \indexspace
+
+  \item {include/distanceMetrics.hpp}, \hyperpage{16}
+  \item {include/kmeans.hpp}, \hyperpage{16, 17}
+  \item {include/read.hpp}, \hyperpage{17, 18}
+
+  \indexspace
+
+  \item {Kmeans}, \hyperpage{7}
+  \item {Kmeans::Kmeans}, \hyperpage{10}
+    \subitem {add}, \hyperpage{10}
+    \subitem {computeDistance}, \hyperpage{10}
+    \subitem {computeNewCenters}, \hyperpage{11}
+    \subitem {div}, \hyperpage{11}
+    \subitem {getInitialCenters}, \hyperpage{12}
+    \subitem {minIndex}, \hyperpage{12}
+  \item {KmeansParser}, \hyperpage{7}
+  \item {KmeansParser::Reader}, \hyperpage{13}
+    \subitem {readAndParse}, \hyperpage{13}
+    \subitem {Reader}, \hyperpage{13}
+
+  \indexspace
+
+  \item {main}
+    \subitem {main.cpp}, \hyperpage{15}
+  \item {main.cpp}
+    \subitem {main}, \hyperpage{15}
+  \item {minIndex}
+    \subitem {Kmeans::Kmeans}, \hyperpage{12}
+
+  \indexspace
+
+  \item {readAndParse}
+    \subitem {KmeansParser::Reader}, \hyperpage{13}
+  \item {Reader}
+    \subitem {KmeansParser::Reader}, \hyperpage{13}
+
+  \indexspace
+
+  \item {src/distanceMetrics.cpp}, \hyperpage{18}
+  \item {src/kmeans.cpp}, \hyperpage{19}
+  \item {src/read.cpp}, \hyperpage{19}
+
+\end{theindex}

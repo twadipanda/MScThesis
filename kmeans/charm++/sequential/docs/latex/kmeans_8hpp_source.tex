@@ -1,0 +1,32 @@
+\doxysection{kmeans.\+hpp}
+\hypertarget{kmeans_8hpp_source}{}\label{kmeans_8hpp_source}\index{include/kmeans.hpp@{include/kmeans.hpp}}
+\mbox{\hyperlink{kmeans_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\ \#pragma\ once}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\ \#include\ <vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\ \#include\ "{}\mbox{\hyperlink{distanceMetrics_8hpp}{distanceMetrics.hpp}}"{}}}
+\DoxyCodeLine{00011\ \ }
+\DoxyCodeLine{00012\ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceKmeans}{Kmeans}}\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{namespaceKmeans}{Kmeans}}\ \{}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::vector<double>>\ \mbox{\hyperlink{classKmeans_1_1Kmeans_ad339b732cf0bbd7d20efcfd9eb6b5c2b}{getInitialCenters}}(\textcolor{keyword}{const}\ std::vector<std::vector<double>>\&\ points,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ k);}
+\DoxyCodeLine{00025\ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::vector<double>>\ \mbox{\hyperlink{classKmeans_1_1Kmeans_a08d0d33970c50ffc44852da3ea245ecc}{computeDistance}}(\textcolor{keyword}{const}\ std::vector<std::vector<double>>\&\ points,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<double>>\&\ centers,\ }
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ (\mbox{\hyperlink{classDM_1_1DistanceMetrics}{DM::DistanceMetrics}}::*func)(\textcolor{keyword}{const}\ std::vector<double>\&,\ \textcolor{keyword}{const}\ std::vector<double>\&),}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDM_1_1DistanceMetrics}{DM::DistanceMetrics}}\&\ obj);}
+\DoxyCodeLine{00038\ \ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classKmeans_1_1Kmeans_a925fdb3fd8ad0bf5ee52ec081f550dc9}{minIndex}}(\textcolor{keyword}{const}\ std::vector<double>\&\ distances);}
+\DoxyCodeLine{00045\ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::vector<double>>\ \mbox{\hyperlink{classKmeans_1_1Kmeans_a966b42d9d94fd070ff4ea2e5df77a7ae}{computeNewCenters}}(\textcolor{keyword}{const}\ std::vector<std::vector<double>>\&\ points,\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<double>>\&\ distances,\ \textcolor{keywordtype}{int}\ k);}
+\DoxyCodeLine{00055\ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{classKmeans_1_1Kmeans_a0720287ca1306f6200154ccf4007f1ca}{add}}(\textcolor{keyword}{const}\ std::vector<double>\&\ a,\ \textcolor{keyword}{const}\ std::vector<double>\&\ b);}
+\DoxyCodeLine{00063\ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{classKmeans_1_1Kmeans_ad599b8ef4f41785c7e2dfbecd6684015}{div}}(\textcolor{keyword}{const}\ std::vector<double>\&\ a,\ \textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \};}
+\DoxyCodeLine{00072\ \ \}}
+
+\end{DoxyCode}

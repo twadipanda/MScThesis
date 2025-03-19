@@ -1,0 +1,61 @@
+\doxysection{Kmeans\+Parser\+::Reader Class Reference}
+\hypertarget{classKmeansParser_1_1Reader}{}\label{classKmeansParser_1_1Reader}\index{KmeansParser::Reader@{KmeansParser::Reader}}
+
+
+Class to read and parse data points from a file.  
+
+
+
+
+{\ttfamily \#include $<$read.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classKmeansParser_1_1Reader_a25327706e4d0725e63ed8b2cdeed1caf}{Reader}} (std\+::string file\+Name)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxylink{classKmeansParser_1_1Reader}{Reader} class. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{classKmeansParser_1_1Reader_a5ceaab0dfddaa6d5fbc96623398966e4}{read\+And\+Parse}} ()
+\begin{DoxyCompactList}\small\item\em Reads and parses the file into a vector of points. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to read and parse data points from a file. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classKmeansParser_1_1Reader_a25327706e4d0725e63ed8b2cdeed1caf}\index{KmeansParser::Reader@{KmeansParser::Reader}!Reader@{Reader}}
+\index{Reader@{Reader}!KmeansParser::Reader@{KmeansParser::Reader}}
+\doxysubsubsection{\texorpdfstring{Reader()}{Reader()}}
+{\footnotesize\ttfamily \label{classKmeansParser_1_1Reader_a25327706e4d0725e63ed8b2cdeed1caf} 
+Kmeans\+Parser\+::\+Reader\+::\+Reader (\begin{DoxyParamCaption}\item[{std\+::string}]{file\+Name}{}\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxylink{classKmeansParser_1_1Reader}{Reader} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & Name of the file to read. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classKmeansParser_1_1Reader_a5ceaab0dfddaa6d5fbc96623398966e4}\index{KmeansParser::Reader@{KmeansParser::Reader}!readAndParse@{readAndParse}}
+\index{readAndParse@{readAndParse}!KmeansParser::Reader@{KmeansParser::Reader}}
+\doxysubsubsection{\texorpdfstring{readAndParse()}{readAndParse()}}
+{\footnotesize\ttfamily \label{classKmeansParser_1_1Reader_a5ceaab0dfddaa6d5fbc96623398966e4} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ Kmeans\+Parser\+::\+Reader\+::read\+And\+Parse (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Reads and parses the file into a vector of points. 
+
+\begin{DoxyReturn}{Returns}
+A vector of vectors, where each inner vector represents a point. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{read_8hpp}{read.\+hpp}}\item 
+src/\mbox{\hyperlink{read_8cpp}{read.\+cpp}}\end{DoxyCompactItemize}

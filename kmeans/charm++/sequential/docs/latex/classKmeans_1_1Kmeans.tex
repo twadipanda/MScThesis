@@ -1,0 +1,162 @@
+\doxysection{Kmeans\+::Kmeans Class Reference}
+\hypertarget{classKmeans_1_1Kmeans}{}\label{classKmeans_1_1Kmeans}\index{Kmeans::Kmeans@{Kmeans::Kmeans}}
+
+
+Class implementing the K-\/\+Means clustering algorithm.  
+
+
+
+
+{\ttfamily \#include $<$kmeans.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{classKmeans_1_1Kmeans_ad339b732cf0bbd7d20efcfd9eb6b5c2b}{get\+Initial\+Centers}} (const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&points, const int \&k)
+\begin{DoxyCompactList}\small\item\em Selects initial cluster centers from the data points. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{classKmeans_1_1Kmeans_a08d0d33970c50ffc44852da3ea245ecc}{compute\+Distance}} (const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&points, const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&centers, double(DM\+::\+Distance\+Metrics\+::\texorpdfstring{$\ast$}{*}func)(const std\+::vector$<$ double $>$ \&, const std\+::vector$<$ double $>$ \&), \mbox{\hyperlink{classDM_1_1DistanceMetrics}{DM\+::\+Distance\+Metrics}} \&obj)
+\begin{DoxyCompactList}\small\item\em Computes distances between points and centers using a specified metric. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classKmeans_1_1Kmeans_a925fdb3fd8ad0bf5ee52ec081f550dc9}{min\+Index}} (const std\+::vector$<$ double $>$ \&distances)
+\begin{DoxyCompactList}\small\item\em Finds the index of the minimum value in a distance vector. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{classKmeans_1_1Kmeans_a966b42d9d94fd070ff4ea2e5df77a7ae}{compute\+New\+Centers}} (const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&points, const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&distances, int k)
+\begin{DoxyCompactList}\small\item\em Computes new cluster centers based on point assignments. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classKmeans_1_1Kmeans_a0720287ca1306f6200154ccf4007f1ca}{add}} (const std\+::vector$<$ double $>$ \&a, const std\+::vector$<$ double $>$ \&b)
+\begin{DoxyCompactList}\small\item\em Adds two vectors element-\/wise. \end{DoxyCompactList}\item 
+std\+::vector$<$ double $>$ \mbox{\hyperlink{classKmeans_1_1Kmeans_ad599b8ef4f41785c7e2dfbecd6684015}{div}} (const std\+::vector$<$ double $>$ \&a, int n)
+\begin{DoxyCompactList}\small\item\em Divides a vector by a scalar. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class implementing the K-\/\+Means clustering algorithm. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classKmeans_1_1Kmeans_a0720287ca1306f6200154ccf4007f1ca}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!add@{add}}
+\index{add@{add}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_a0720287ca1306f6200154ccf4007f1ca} 
+std\+::vector$<$ double $>$ Kmeans\+::\+Kmeans\+::add (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{a}{, }\item[{const std\+::vector$<$ double $>$ \&}]{b}{}\end{DoxyParamCaption})}
+
+
+
+Adds two vectors element-\/wise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & First vector. \\
+\hline
+{\em b} & Second vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Resulting vector from the addition. 
+\end{DoxyReturn}
+\Hypertarget{classKmeans_1_1Kmeans_a08d0d33970c50ffc44852da3ea245ecc}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!computeDistance@{computeDistance}}
+\index{computeDistance@{computeDistance}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{computeDistance()}{computeDistance()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_a08d0d33970c50ffc44852da3ea245ecc} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ Kmeans\+::\+Kmeans\+::compute\+Distance (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&}]{points}{, }\item[{const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&}]{centers}{, }\item[{double(DM\+::\+Distance\+Metrics\+::\texorpdfstring{$\ast$}{*}}]{func~}{)(const std\+::vector$<$ double $>$ \&, const std\+::vector$<$ double $>$ \&), }\item[{\mbox{\hyperlink{classDM_1_1DistanceMetrics}{DM\+::\+Distance\+Metrics}} \&}]{obj}{}\end{DoxyParamCaption})}
+
+
+
+Computes distances between points and centers using a specified metric. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & List of data points. \\
+\hline
+{\em centers} & Current cluster centers. \\
+\hline
+{\em func} & Pointer to the distance metric function. \\
+\hline
+{\em obj} & Reference to the Distance\+Metrics object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector of distance vectors, one per point. 
+\end{DoxyReturn}
+\Hypertarget{classKmeans_1_1Kmeans_a966b42d9d94fd070ff4ea2e5df77a7ae}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!computeNewCenters@{computeNewCenters}}
+\index{computeNewCenters@{computeNewCenters}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{computeNewCenters()}{computeNewCenters()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_a966b42d9d94fd070ff4ea2e5df77a7ae} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ Kmeans\+::\+Kmeans\+::compute\+New\+Centers (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&}]{points}{, }\item[{const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&}]{distances}{, }\item[{int}]{k}{}\end{DoxyParamCaption})}
+
+
+
+Computes new cluster centers based on point assignments. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & List of data points. \\
+\hline
+{\em distances} & Distances from points to centers. \\
+\hline
+{\em k} & Number of clusters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Updated cluster centers. 
+\end{DoxyReturn}
+\Hypertarget{classKmeans_1_1Kmeans_ad599b8ef4f41785c7e2dfbecd6684015}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!div@{div}}
+\index{div@{div}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{div()}{div()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_ad599b8ef4f41785c7e2dfbecd6684015} 
+std\+::vector$<$ double $>$ Kmeans\+::\+Kmeans\+::div (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{a}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+Divides a vector by a scalar. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Vector to divide. \\
+\hline
+{\em n} & Scalar denominator. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Resulting vector after division. 
+\end{DoxyReturn}
+\Hypertarget{classKmeans_1_1Kmeans_ad339b732cf0bbd7d20efcfd9eb6b5c2b}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!getInitialCenters@{getInitialCenters}}
+\index{getInitialCenters@{getInitialCenters}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{getInitialCenters()}{getInitialCenters()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_ad339b732cf0bbd7d20efcfd9eb6b5c2b} 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ Kmeans\+::\+Kmeans\+::get\+Initial\+Centers (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \&}]{points}{, }\item[{const int \&}]{k}{}\end{DoxyParamCaption})}
+
+
+
+Selects initial cluster centers from the data points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em points} & List of all data points. \\
+\hline
+{\em k} & Number of clusters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Initial centers as a vector of vectors. 
+\end{DoxyReturn}
+\Hypertarget{classKmeans_1_1Kmeans_a925fdb3fd8ad0bf5ee52ec081f550dc9}\index{Kmeans::Kmeans@{Kmeans::Kmeans}!minIndex@{minIndex}}
+\index{minIndex@{minIndex}!Kmeans::Kmeans@{Kmeans::Kmeans}}
+\doxysubsubsection{\texorpdfstring{minIndex()}{minIndex()}}
+{\footnotesize\ttfamily \label{classKmeans_1_1Kmeans_a925fdb3fd8ad0bf5ee52ec081f550dc9} 
+int Kmeans\+::\+Kmeans\+::min\+Index (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ double $>$ \&}]{distances}{}\end{DoxyParamCaption})}
+
+
+
+Finds the index of the minimum value in a distance vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em distances} & Vector of distances. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Index of the minimum distance. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{kmeans_8hpp}{kmeans.\+hpp}}\item 
+src/\mbox{\hyperlink{kmeans_8cpp}{kmeans.\+cpp}}\end{DoxyCompactItemize}
