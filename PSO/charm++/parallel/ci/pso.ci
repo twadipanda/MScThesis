@@ -1,0 +1,8 @@
+module pso {
+  array [1D] PSO {
+    entry void PSO();
+    entry void PSO(const Bench::BenchMark& benchmark, int numParticles, int numDimensions, int maxIterations, double inertia, double cognitive, double social);
+    entry void iterate(const std::vector<std::vector<double>>& population, double retention, double elite);
+    entry void reproduce(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&);
+  };
+};
