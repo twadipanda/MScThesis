@@ -1,0 +1,8 @@
+dist-newstyle/
+dist-newstyle/
+**/charm*
+*.eventlog
+*.csv
+*.eventlog
+**/dist-newstyle
+**/build
