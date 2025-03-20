@@ -15,5 +15,8 @@ class GA : public CBase_GA {
   static std::vector<std::pair<int, double>> evaluate(const std::vector<std::vector<double>>&);
   void iterate(const std::vector<std::vector<double>>&, double retention, double elite);
   void reproduce(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&);
-  };
-// }
+  void iterate_cont();
+  void parEval(int, const std::vector<double>&);
+  void parEvaluate(const std::vector<std::vector<double>>& population);
+  void sync_(const std::pair<int, double>&);
+};

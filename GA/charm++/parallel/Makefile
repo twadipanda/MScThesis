@@ -6,7 +6,7 @@ all: ga
 
 
 ga : main.o benchmark.o crossover.o ga.o mutation.o selection.o
-	$(CHARMC) -language charm++ -o ga main.o benchmark.o crossover.o ga.o mutation.o selection.o
+	$(CHARMC) -language charm++ -tracemode projections -o ga main.o benchmark.o crossover.o ga.o mutation.o selection.o
 
 main.o : app/main.cpp include/main.h main.decl.h main.def.h ga.decl.h
 	$(CHARMC) -I./include -I. -o main.o app/main.cpp
@@ -42,4 +42,4 @@ run-quiet:
 	$(CHARMDIR)/bin/charmrun +p7 ./ga ++quiet
 
 run:
-	$(CHARMDIR)/bin/charmrun +p7 ./ga
+	$(CHARMDIR)/bin/charmrun +p12 ./ga
