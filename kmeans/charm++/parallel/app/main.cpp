@@ -30,10 +30,10 @@ Main::Main(CkArgMsg* msg) {
     kmeansArray = CProxy_Kmeans::ckNew(numElements);
     counter = 0;
     mainProxy = thisProxy;
-    k = 25;
+    k = 26;
     timesCalled = 0;
     iterations = 1;
-    KmeansParser::Reader reader("worms_64d.txt");
+    KmeansParser::Reader reader("letter.txt");
     points = reader.readAndParse();
     centers = Kmeans::getInitialCenters(points, k);
     new_centers.resize(k);
@@ -48,6 +48,7 @@ Main::Main(CkArgMsg* msg) {
 // NOTE: This constructor does not need to appear in the ".ci" file
 Main::Main(CkMigrateMessage* msg) { }
 
+//NAIVE
 // void Main::finished(const std::vector<double>& distance, int index) {
 //     distances[index] = distance;
 //     timesCalled++;

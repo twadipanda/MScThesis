@@ -3,4 +3,6 @@
 **/dist-newstyle
 **/build
 **/ga.*
+**/kmeans.*
+**/pso.*
 **/charm-v*

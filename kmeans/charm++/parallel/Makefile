@@ -41,4 +41,4 @@ run-quiet:
 	$(CHARMDIR)/bin/charmrun +p7 ./kmeans ++quiet
 
 run:
-	$(CHARMDIR)/bin/charmrun +p7 ./kmeans
+	$(CHARMDIR)/bin/charmrun +p12 ./kmeans
