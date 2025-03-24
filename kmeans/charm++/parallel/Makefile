@@ -7,7 +7,7 @@ all: distanceMetrics
 
 
 distanceMetrics : main.o distanceMetrics.o read.o kmeans.o
-	$(CHARMC) -tracemode projections -language charm++ -o kmeans main.o distanceMetrics.o read.o kmeans.o
+	$(CHARMC) -language charm++ -o kmeans main.o distanceMetrics.o read.o kmeans.o
 
 main.o : app/main.cpp include/main.h main.decl.h main.def.h kmeans.decl.h
 	$(CHARMC) -I./include -I. -o main.o app/main.cpp
@@ -41,4 +41,4 @@ run-quiet:
 	$(CHARMDIR)/bin/charmrun +p7 ./kmeans ++quiet
 
 run:
-	$(CHARMDIR)/bin/charmrun +p12 ./kmeans
+	$(CHARMDIR)/bin/charmrun +p12 ./kmeans ../../a3.txt 50
