@@ -22,3 +22,6 @@ clean:
 	rm -f kmeans.o
 	rm -f distanceMetrics.o
 	rm -f read.o
+
+test:
+	g++ -std=c++20 -o test tests/test.cpp -I$(HOME)/gtest-install/include -L$(HOME)/gtest-install/lib -lgtest -lgtest_main -pthread -Wl,--verbose | grep "libstdc++"
