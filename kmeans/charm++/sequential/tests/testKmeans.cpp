@@ -1,49 +1,60 @@
 #include <gtest/gtest.h>
 #include <vector>
+#include <cmath>
 #include "kmeans.hpp"
 
 Kmeans::Kmeans kmeans;
 
 TEST(KmeansAdd, AddTwoVectors) {
-    EXPECT_EQ(kmeans.add({1, 2}, {3, 4}), std::vector<double>{4, 6});
+    std::vector<double> expected = {4, 6};
+    EXPECT_EQ(kmeans.add({1, 2}, {3, 4}), expected);
 }
 
 TEST(KmeansAdd, AddThreeVectors) {
     std::vector<double> result = kmeans.add({1, 1}, {2, 2});
     result = kmeans.add(result, {3, 3});
-    EXPECT_EQ(result, std::vector<double>{6, 6});
+    std::vector<double> expected = {6, 6};
+    EXPECT_EQ(result, expected);
 }
 
 TEST(KmeansAdd, SingleVector) {
-    EXPECT_EQ(kmeans.add({5, 5}, {0, 0}), std::vector<double>{5, 5});
+    std::vector<double> expected = {5, 5};
+    EXPECT_EQ(kmeans.add({5, 5}, {0, 0}), expected);
 }
 
 TEST(KmeansAdd, NegativeNumbers) {
-    EXPECT_EQ(kmeans.add({-1, 2}, {3, -4}), std::vector<double>{2, -2});
+    std::vector<double> expected = {2, -2};
+    EXPECT_EQ(kmeans.add({-1, 2}, {3, -4}), expected);
 }
 
 TEST(KmeansAdd, FloatingPointNumbers) {
-    EXPECT_EQ(kmeans.add({1.5, 2.5}, {2.5, 3.5}), std::vector<double>{4.0, 6.0});
+    std::vector<double> expected = {4.0, 6.0};
+    EXPECT_EQ(kmeans.add({1.5, 2.5}, {2.5, 3.5}), expected);
 }
 
 TEST(KmeansDiv, VectorScalarDiv) {
-    EXPECT_EQ(kmeans.div({4, 6, 8}, 2), std::vector<double>{2, 3, 4});
+    std::vector<double> expected = {2, 3, 4};
+    EXPECT_EQ(kmeans.div({4, 6, 8}, 2), expected);
 }
 
 TEST(KmeansDiv, NegativeScalar) {
-    EXPECT_EQ(kmeans.div({4, -6, 8}, -2), std::vector<double>{-2, 3, -4});
+    std::vector<double> expected = {-2, 3, -4};
+    EXPECT_EQ(kmeans.div({4, -6, 8}, -2), expected);
 }
 
 TEST(KmeansDiv, VectorWithZeros) {
-    EXPECT_EQ(kmeans.div({0, 0, 0}, 5), std::vector<double>{0, 0, 0});
+    std::vector<double> expected = {0, 0, 0};
+    EXPECT_EQ(kmeans.div({0, 0, 0}, 5), expected);
 }
 
 TEST(KmeansDiv, FloatingPointElements) {
-    EXPECT_EQ(kmeans.div({1.5, 2.5, 3.5}, 2), std::vector<double>{0.75, 1.25, 1.75});
+    std::vector<double> expected = {0.75, 1.25, 1.75};
+    EXPECT_EQ(kmeans.div({1.5, 2.5, 3.5}, 2), expected);
 }
 
 TEST(KmeansDiv, EmptyVector) {
-    EXPECT_EQ(kmeans.div({}, 3), std::vector<double>{});
+    std::vector<double> expected = {};
+    EXPECT_EQ(kmeans.div({}, 3), expected);
 }
 
 TEST(KmeansDiv, DivisionByZero) {
@@ -55,19 +66,21 @@ TEST(KmeansDiv, DivisionByZero) {
 
 TEST(KmeansComputeNewCenter, SingleClusterAllPoints) {
     std::vector<std::vector<double>> points = {{1, 1}, {3, 3}};
-    std::vector<std::vector<double>> initial_centers = {{0, 0}};
-    EXPECT_EQ(kmeans.computeNewCenters(points, initial_centers, 1), std::vector<std::vector<double>>{{2, 2}});
+    std::vector<std::vector<double>> distances = {{0}, {1}};
+    std::vector<std::vector<double>> expected = {{2, 2}};
+    EXPECT_EQ(kmeans.computeNewCenters(points, distances, 1), expected);
 }
 
 TEST(KmeansComputeNewCenter, TwoClustersFirstIteration) {
     std::vector<std::vector<double>> points = {{1, 1}, {4, 4}};
-    std::vector<std::vector<double>> initial_centers = {{1, 1}, {5, 5}};
-    EXPECT_EQ(kmeans.computeNewCenters(points, initial_centers, 2), std::vector<std::vector<double>>{{1, 1}, {4, 4}});
+    std::vector<std::vector<double>> distances = {{0, 1}, {1, 0}};
+    std::vector<std::vector<double>> expected = {{1, 1}, {4, 4}};
+    EXPECT_EQ(kmeans.computeNewCenters(points, distances, 2), expected);
 }
 
 TEST(KmeansComputeNewCenter, MultiplePointsPerCluster) {
     std::vector<std::vector<double>> points = {{0, 0}, {1, 1}, {4, 4}, {5, 5}};
-    std::vector<std::vector<double>> initial_centers = {{0, 0}, {5, 5}};
-    EXPECT_EQ(kmeans.computeNewCenters(points, initial_centers, 2), 
-              std::vector<std::vector<double>>{{0.5, 0.5}, {4.5, 4.5}});
+    std::vector<std::vector<double>> distances = {{0, 1}, {0, 1}, {1, 0}, {1, 0}};
+    std::vector<std::vector<double>> expected = {{0.5, 0.5}, {4.5, 4.5}};
+    EXPECT_EQ(kmeans.computeNewCenters(points, distances, 2), expected);
 }

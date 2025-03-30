@@ -26,4 +26,4 @@ clean:
 	rm -f kmeans
 
 test:
-	g++ -o test tests/test.cpp -lgtest -lgtest_main -pthread
+	g++ -o test tests/* src/* -I./include -lgtest -lgtest_main -pthread
