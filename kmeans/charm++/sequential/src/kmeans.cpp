@@ -67,7 +67,11 @@
          }
          return std::move(result);
      }
- 
+
+
+    // Takes the points, the distances of the points from each cluster center and the number of clusters as arguments
+    // Computes the cluster each point should belong to then uses those points to compute
+    // new centers by calculating their mean.
      std::vector<std::vector<double>> Kmeans::computeNewCenters(const std::vector<std::vector<double>>& points,
          const std::vector<std::vector<double>>& distances, int k) {
              std::vector<std::vector<std::vector<double>>> points_for_centers(k);

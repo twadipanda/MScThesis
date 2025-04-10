@@ -4,7 +4,19 @@
 #include <iostream>
 #include "ga.hpp"
 
+/**
+ * @brief Namespace for Evolutionary Algorithm (EA) implementations.
+ */
 namespace EA {
+  /**
+   * @brief Initializes a population for the GA.
+   *
+   * Creates a population of individuals with random genes in the range [-1, 1].
+   *
+   * @param populationSize Number of individuals in the population.
+   * @param individualSize Number of genes per individual.
+   * @return std::vector<std::vector<double>> The initialized population.
+   */
   std::vector<std::vector<double>> GA::initialize(int populationSize, int individualSize) {
     std::vector<std::vector<double>> population;
     std::vector<double> individual;
@@ -23,6 +35,15 @@ namespace EA {
     return std::move(population);
   }
 
+  /**
+   * @brief Evaluates the fitness of a population using a benchmark function.
+   *
+   * Computes fitness for each individual and pairs it with its index.
+   *
+   * @param population The population to evaluate.
+   * @param benchmark The benchmark function to apply.
+   * @return std::vector<std::pair<int, double>> List of (index, fitness) pairs.
+   */
   std::vector<std::pair<int, double>> GA::evaluate(std::vector<std::vector<double>>& population, const Bench::BenchMark& benchmark) {
     std::vector<std::pair<int, double>> fitness;
     fitness.reserve(population.size());
@@ -32,6 +53,20 @@ namespace EA {
     return std::move(fitness);
   }
 
+  /**
+   * @brief Performs one iteration of the GA.
+   *
+   * Evolves the population using selection, crossover, and mutation, preserving elites.
+   *
+   * @param population The current population.
+   * @param retention Tournament selection size.
+   * @param elite Percentage of population to preserve as elites.
+   * @param selectionHeuristic Selection heuristic (e.g., tournament).
+   * @param crossoverHeuristic Crossover heuristic (e.g., SBX).
+   * @param mutationHeuristic Mutation heuristic (e.g., Gaussian).
+   * @param benchmark Fitness benchmark function.
+   * @return std::vector<std::vector<double>> The new population after iteration.
+   */
   std::vector<std::vector<double>> GA::iterate(std::vector<std::vector<double>>& population, double retention, double elite,
     const Heuristcs::SelectionHeuristic& selectionHeuristic, const Heuristcs::CrossoverHeuristic& crossoverHeuristic, const Heuristcs::MutationHeuristic& mutationHeuristic, const Bench::BenchMark& benchmark) {
       std::vector<std::pair<int, double>> fitness = evaluate(population, benchmark);

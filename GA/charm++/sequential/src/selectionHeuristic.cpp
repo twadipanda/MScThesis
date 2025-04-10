@@ -5,7 +5,21 @@
 #include <random>
 #include "selectionHeuristic.hpp"
 
+/**
+ * @brief Namespace for heuristic operators in the Genetic Algorithm.
+ */
 namespace Heuristcs {
+  /**
+   * @brief Performs tournament selection on a population.
+   *
+   * Selects individuals by holding tournaments of specified size, preserving elites first.
+   *
+   * @param population The current population.
+   * @param fitness Fitness values paired with indices.
+   * @param params Vector containing elite percentage (first) and tournament size (second).
+   * @return std::vector<std::vector<double>> The selected population.
+   * @throw std::invalid_argument If params lacks elite percentage or tournament size.
+   */
   std::vector<std::vector<double>> Tournament::select(std::vector<std::vector<double>>& population, std::vector<std::pair<int, double>>& fitness, std::vector<double>& params) const {
     if (params.size() < 2) {
       throw std::invalid_argument("Eliteness and Selection Criteria not provided for tournament selection...");
