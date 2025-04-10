@@ -5,6 +5,7 @@
 #include "kmeans.h"
 
 #include<vector>
+ #include <string>
 #include<iostream>
 #include <chrono>
 #include "read.h"
@@ -26,14 +27,16 @@ int timesCalled;
 
 // Entry point of Charm++ application
 Main::Main(CkArgMsg* msg) {
+    char** argv = msg->argv;
     numElements = 100;
     kmeansArray = CProxy_Kmeans::ckNew(numElements);
     counter = 0;
     mainProxy = thisProxy;
-    k = 25;
+    k = std::stoi(argv[2]);
     timesCalled = 0;
     iterations = 1;
-    KmeansParser::Reader reader("worms_64d.txt");
+    std::string fileName = argv[1];
+    KmeansParser::Reader reader(fileName);
     points = reader.readAndParse();
     centers = Kmeans::getInitialCenters(points, k);
     new_centers.resize(k);
@@ -48,6 +51,7 @@ Main::Main(CkArgMsg* msg) {
 // NOTE: This constructor does not need to appear in the ".ci" file
 Main::Main(CkMigrateMessage* msg) { }
 
+//NAIVE
 // void Main::finished(const std::vector<double>& distance, int index) {
 //     distances[index] = distance;
 //     timesCalled++;
@@ -81,8 +85,8 @@ void Main::finished(const std::vector<double>& centerPoint, int k_) {
             kmeansArray[0].computeDistance(points, centers);
         }
         else {
-            std::cout << centers[0][0] << "\n";
-            std::cout << new_centers[0][0] << "\n";
+            // std::cout << centers[0][0] << "\n";
+            // std::cout << new_centers[0][0] << "\n";
             done();
         }
     }

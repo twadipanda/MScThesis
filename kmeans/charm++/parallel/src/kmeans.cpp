@@ -46,6 +46,7 @@ void Kmeans::computeDistance(const std::vector<std::vector<double>>& points,
         }
 }
 
+//NAIVE
 // void Kmeans::computeDistancePar(const std::vector<std::vector<double>>& centers, const std::vector<double>& point, int pointIndex) {
 //     std::vector<double> distance;
 //     EuclideanDistance distance_metrics;

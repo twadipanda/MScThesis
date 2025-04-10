@@ -12,6 +12,11 @@
 
 extern CProxy_Main mainProxy;
 extern /* readonly */ int numElements;
+std::vector<std::pair<int, double>> fitness;
+int popLen;
+std::vector<std::vector<double>> population_;
+double retention_;
+double elite_;
 
 // namespace EA {
   GA::GA() {}
@@ -35,6 +40,7 @@ extern /* readonly */ int numElements;
     return std::move(population);
   }
 
+// NAIVE EVALUATE FUNCTION
   std::vector<std::pair<int, double>> GA::evaluate(const std::vector<std::vector<double>>& population) {
     std::vector<std::pair<int, double>> fitness;
     Bench::Sphere benchmark;
@@ -45,20 +51,68 @@ extern /* readonly */ int numElements;
     return std::move(fitness);
   }
 
+  // void GA::iterate(const std::vector<std::vector<double>>& population, double retention, double elite) {
+  //   try {
+  //     Tournament selectionHeuristic;
+  //     std::vector<std::pair<int, double>> fitness = evaluate(population);
+  //     std::vector<double> params = {elite, retention};
+  //     std::vector<double> distributionIndex = {2};
+  //     std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population, fitness, params);
+  //     int chareIndex = 1;
+  //     std::vector<std::vector<double>> elites;
+  //     for (int i = 0; i < std::floor(population.size()*elite); i++) {
+  //       elites.push_back(selectedPopulation[i]);
+  //     }
+  //     mainProxy.recieve(elites);
+  //     for (int i = std::floor(population.size()*elite); i < population.size() - 1; i+=2) {
+  //       if (chareIndex == (numElements - 1)) {
+  //         chareIndex = 1;
+  //       }
+  //       thisProxy[chareIndex].reproduce(selectedPopulation[i], selectedPopulation[i+1], distributionIndex);
+  //       chareIndex++;
+  //     }
+  //   } catch (const std::exception& e) {
+  //     std::cerr << "Error iterating: " << e.what() << std::endl;
+  //     CkExit();
+  //   }
+  //     // mainProxy.finished();
+  // }
+
+  void GA::parEvaluate(const std::vector<std::vector<double>>& population) {
+    // std::cout << "Population size: " << population.size() << std::endl;
+    int chareIndex = 1;
+    fitness.reserve(population.size());
+    for (int i = 0; i < population.size(); i++) {
+      if (chareIndex == (numElements - 1)) {
+        chareIndex = 1;
+      }
+      thisProxy[chareIndex].parEval(i, population[i]);
+      chareIndex++;
+    }
+  }
+
   void GA::iterate(const std::vector<std::vector<double>>& population, double retention, double elite) {
+    fitness.clear();
+    popLen = population.size();
+    population_ = population;
+    retention_ = retention;
+    elite_ = elite;
+    parEvaluate(population);
+  }
+
+  void GA::iterate_cont() {
+    Tournament selectionHeuristic;
     try {
-      Tournament selectionHeuristic;
-      std::vector<std::pair<int, double>> fitness = evaluate(population);
-      std::vector<double> params = {elite, retention};
+      std::vector<double> params = {elite_, retention_};
       std::vector<double> distributionIndex = {2};
-      std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population, fitness, params);
+      std::vector<std::vector<double>> selectedPopulation = selectionHeuristic.select(population_, fitness, params);
       int chareIndex = 1;
       std::vector<std::vector<double>> elites;
-      for (int i = 0; i < std::floor(population.size()*elite); i++) {
+      for (int i = 0; i < std::floor(population_.size()*elite_); i++) {
         elites.push_back(selectedPopulation[i]);
       }
       mainProxy.recieve(elites);
-      for (int i = std::floor(population.size()*elite); i < population.size() - 1; i+=2) {
+      for (int i = std::floor(population_.size()*elite_); i < population_.size() - 1; i+=2) {
         if (chareIndex == (numElements - 1)) {
           chareIndex = 1;
         }
@@ -79,6 +133,19 @@ extern /* readonly */ int numElements;
     offsprings[0] = mutationHeuristic.mutate(offsprings[0]);
     offsprings[1] = mutationHeuristic.mutate(offsprings[1]);
     mainProxy.recieve(offsprings);
+  }
+
+  void GA::parEval(int index, const std::vector<double>& individual) {
+    Bench::Sphere benchmark;
+    thisProxy[35].sync_(std::make_pair(index, benchmark.fitness(individual)));
+  }
+
+  void GA::sync_(const std::pair<int, double>& fit) {
+    fitness.push_back(fit);
+    // std::cout << "POP SIZE: " << popLen << " FITNESS SIZE: " << fitness.size() << std::endl;
+    if (fitness.size() == popLen) {
+      iterate_cont();
+    }
   }
 // }
 

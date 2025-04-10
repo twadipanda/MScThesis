@@ -75,11 +75,11 @@ void Main::finished() {
   double selectionCriteria = 2;
   double percentageElite = 0.02;
   iterations++;
-  std::vector<std::pair<int, double>> fitness = GA::evaluate(population);
-  std::sort(fitness.begin(), fitness.end(), [](const std::pair<int, double>& a, const std::pair<int, double>& b) {
-    return a.second < b.second;
-  });
-  if (fitness[0].second <= 0.00005 || iterations == 10000) {
+  if (iterations == 10000) {
+    std::vector<std::pair<int, double>> fitness = GA::evaluate(population);
+    std::sort(fitness.begin(), fitness.end(), [](const std::pair<int, double>& a, const std::pair<int, double>& b) {
+      return a.second < b.second;
+    });
     done(fitness);
   }
   else {

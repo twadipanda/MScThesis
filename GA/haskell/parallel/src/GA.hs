@@ -1,6 +1,6 @@
 module GA (initializePopulation, gaIterate) where 
 
-import Control.Parallel.Strategies (using, parList, rdeepseq)
+import Control.Parallel.Strategies (using, parList, parListChunk, rdeepseq)
 import System.Random (newStdGen, randomRs)
 import Data.List.Split (chunksOf)
 import Heuristics (simiulatedBinary, gaussianMutate, tournamentSelection)
@@ -15,7 +15,7 @@ initializePopulation numIndividual chromosome  = do
 
 -- population -> fitness function -> fitnesses
 evaluate :: [[Double]] -> ([Double] -> Double) -> [Double]
-evaluate population f = map f population `using` parList rdeepseq
+evaluate population f = map f population `using` parListChunk 100 rdeepseq
 
 gaIterate :: Int -> [[Double]] -> Int -> Int -> Double -> IO (Double)
 gaIterate iter population elites selectionSize distributionIndex
@@ -26,13 +26,13 @@ gaIterate iter population elites selectionSize distributionIndex
     let populationSize = length population
     beta_ <- beta distributionIndex
     randNS <- randomNumbers (populationSize*selectionSize) (populationSize - 1)
-    let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize
+    let selectedPopulation = tournamentSelection population (evaluate population sphere) (randNS) elites selectionSize --`using` parListChunk 500 rdeepseq
     let elitePop = take elites selectedPopulation
     let nonElitePop = drop elites selectedPopulation
-    let offspring = concat $ zipWith (\x y -> simiulatedBinary x y beta_) (take (div (populationSize - elites) 2) nonElitePop) (drop (div (populationSize - elites) 2) nonElitePop)
+    let offspring = concat (zipWith (\x y -> simiulatedBinary x y beta_) (take (div (populationSize - elites) 2) nonElitePop) (drop (div (populationSize - elites) 2) nonElitePop)) `using` parListChunk 10 rdeepseq
     let offspringSize = length $ offspring!!0
     randNM <- randomNumbers offspringSize 9
     normalN <- normalNoise offspringSize
-    let mutated = map (\x -> gaussianMutate x (randNM) (normalN)) offspring
+    let mutated = map (\x -> gaussianMutate x (randNM) (normalN)) offspring `using` parListChunk 10 rdeepseq
     let newPopulation = elitePop ++ mutated
     gaIterate (iter+1) newPopulation elites selectionSize distributionIndex

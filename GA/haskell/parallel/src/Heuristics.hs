@@ -7,7 +7,7 @@ import Helpers (sortFitness)
 simiulatedBinary :: [Double] -> [Double] -> Double -> [[Double]]
 simiulatedBinary par1 par2 beta = (zipWith (\x y -> max 0.0 (min 0.5 (((1 + beta) * x) + ((1 - beta) * y)))) par1 par2) :
                                   (zipWith (\x y -> max 0.0 (min 0.5 (((1 - beta) * x) + ((1 + beta) * y)))) par1 par2) :
-                                  []
+                                  [] --`using` parList rdeepseq
 
 gaussianMutate :: [Double] -> [Int] -> [Double] -> [Double]
 gaussianMutate offspring shouldMutates noises = 

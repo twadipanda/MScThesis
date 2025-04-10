@@ -3,6 +3,8 @@ module ga {
     entry void GA();
     entry void iterate(const std::vector<std::vector<double>>& population, double retention, double elite);
     entry void reproduce(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&);
+    entry void parEval(int, const std::vector<double>&);
+    entry void sync_(const std::pair<int, double>&);
   };
 
 };
